@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard NPS & Satisfacción - Speakers En Verde Calama 2026</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- TOP NAVBAR -->
+  <header class="bg-gradient-to-r from-[#1B365D] via-[#163056] to-[#0D6232] text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center font-black text-xl text-emerald-300">
+          🌱
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-lg sm:text-xl tracking-tight">Speakers En Verde</h1>
+            <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">Calama 2026</span>
+          </div>
+          <p class="text-xs text-slate-300 font-light">Panel de Métricas NPS & Satisfacción | Viraliza Corfo 25VIRTL-307467</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 text-xs">
+        <a href="https://drive.google.com/drive/u/0/folders/1c0F1ruRhRITWHEgzBWOshNw82KSkjxnP" target="_blank" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition flex items-center gap-1.5 text-white border border-white/10">
+          <i data-lucide="folder" class="w-3.5 h-3.5"></i>
+          <span>Carpeta Drive</span>
+        </a>
+        <a href="https://drive.google.com/open?id=10UfR3Kzawf8AC2SR6R4s5o6ZdXudFPtO" target="_blank" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 transition flex items-center gap-1.5 text-white font-medium shadow-sm">
+          <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+          <span>Descargar PDF</span>
+        </a>
+        <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition flex items-center gap-1.5 text-white border border-white/10">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span>Imprimir</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTROLES DE FILTRO -->
+  <section class="bg-white border-b border-slate-200 py-3 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2 text-sm text-slate-600 font-medium">
+          <i data-lucide="filter" class="w-4 h-4 text-slate-400"></i>
+          <span>Filtrar por:</span>
+        </div>
+        
+        <select id="schoolFilter" onchange="applyFilters()" class="text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-700">
+          <option value="ALL">Todos los Establecimientos (5)</option>
+          <option value="Colegio Chuquicamata">Colegio Chuquicamata (6)</option>
+          <option value="Liceo Bicentenario Politécnico Cesáreo Aguirre">Liceo Cesáreo Aguirre (6)</option>
+          <option value="Liceo Minero América">Liceo Minero América (5)</option>
+          <option value="Colegio Ecológico Montessori">Colegio Montessori (5)</option>
+          <option value="Liceo Francisco de Aguirre B-8">Liceo Francisco de Aguirre (4)</option>
+        </select>
+
+        <select id="roleFilter" onchange="applyFilters()" class="text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-700">
+          <option value="ALL">Todos los Roles (26)</option>
+          <option value="Estudiante">Estudiantes (22)</option>
+          <option value="Docente Líder">Docentes Líderes (4)</option>
+        </select>
+
+        <button onclick="resetFilters()" class="text-xs text-blue-600 hover:text-blue-800 font-semibold underline px-2 py-1">
+          Limpiar filtros
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs text-slate-500">
+        <span>Mostrando:</span>
+        <span id="filteredCountBadge" class="bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">26 de 26 encuestas</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+
+    <!-- KPI CARDS HERO -->
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- NPS SCORE -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-100 rounded-bl-full -mr-6 -mt-6 transition group-hover:scale-105"></div>
+        <div class="relative z-10">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">NPS Score Global</span>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpiNpsScore" class="text-3xl sm:text-4xl font-extrabold text-emerald-700">+84.6</span>
+            <span class="text-xs font-semibold text-emerald-600">puntos</span>
+          </div>
+          <div class="mt-2 flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
+            <i data-lucide="award" class="w-4 h-4"></i>
+            <span>Nivel Excelencia Mundial</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- META 1 CORFO -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-blue-100 rounded-bl-full -mr-6 -mt-6 transition group-hover:scale-105"></div>
+        <div class="relative z-10">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Meta 1: Recomienda</span>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpiMeta1" class="text-3xl sm:text-4xl font-extrabold text-[#1B365D]">88.5%</span>
+            <span class="text-xs font-semibold text-slate-500">promotores</span>
+          </div>
+          <div class="mt-2 flex items-center gap-1 text-xs text-slate-500">
+            <span id="kpiPromotersDetail">23 de 26 (Notas 9-10)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- META 2 SATISFACCION -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-100 rounded-bl-full -mr-6 -mt-6 transition group-hover:scale-105"></div>
+        <div class="relative z-10">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Meta 2: Satisfacción Global</span>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpiMeta2" class="text-3xl sm:text-4xl font-extrabold text-emerald-700">88.4%</span>
+            <span class="text-xs font-semibold text-slate-500">calif. 4 ó 5</span>
+          </div>
+          <div class="mt-2 flex items-center gap-1 text-xs text-slate-500">
+            <span id="kpiMeta2Detail">275 de 311 respuestas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROMEDIO NOTA Y MUESTRA -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition">
+        <div class="absolute top-0 right-0 w-24 h-24 bg-amber-100 rounded-bl-full -mr-6 -mt-6 transition group-hover:scale-105"></div>
+        <div class="relative z-10">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Nota Media Recomendación</span>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span id="kpiAvgNps" class="text-3xl sm:text-4xl font-extrabold text-slate-800">9.35</span>
+            <span class="text-xs font-semibold text-slate-500">de 10.0</span>
+          </div>
+          <div class="mt-2 flex items-center gap-1 text-xs text-slate-500">
+            <span>Dimensiones: </span>
+            <strong id="kpiDimMean" class="text-slate-800">4.52 / 5.0</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TABS DE NAVEGACIÓN -->
+    <div class="border-b border-slate-200 flex gap-6 text-sm font-semibold text-slate-500">
+      <button onclick="switchTab('tab-general')" id="btn-tab-general" class="pb-3 border-b-2 border-emerald-600 text-emerald-700 flex items-center gap-2">
+        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+        <span>Visión General & Gráficos</span>
+      </button>
+      <button onclick="switchTab('tab-dimensiones')" id="btn-tab-dimensiones" class="pb-3 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
+        <i data-lucide="layers" class="w-4 h-4"></i>
+        <span>Evaluación por Dimensiones</span>
+      </button>
+      <button onclick="switchTab('tab-feedback')" id="btn-tab-feedback" class="pb-3 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
+        <i data-lucide="message-square" class="w-4 h-4"></i>
+        <span>Feedback Cualitativo</span>
+      </button>
+      <button onclick="switchTab('tab-respuestas')" id="btn-tab-respuestas" class="pb-3 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2">
+        <i data-lucide="table" class="w-4 h-4"></i>
+        <span>Base de Respuestas (N=26)</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: VISIÓN GENERAL Y GRÁFICOS -->
+    <div id="tab-general" class="space-y-6">
+      
+      <!-- CHARTS ROW -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- DONUT CHART NPS -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-slate-800 text-sm">Distribución de Audiencia NPS</h3>
+            <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">Metodología NPS</span>
+          </div>
+          <div class="flex-1 flex items-center justify-center relative min-h-[220px]">
+            <canvas id="npsDonutChart"></canvas>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-100 text-center">
+            <div>
+              <span class="text-xs font-bold text-emerald-600 block">Promotores</span>
+              <span id="detailPromoters" class="text-sm font-extrabold text-slate-800">23 (88.5%)</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-amber-500 block">Pasivos</span>
+              <span id="detailPassives" class="text-sm font-extrabold text-slate-800">2 (7.7%)</span>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-red-500 block">Detractores</span>
+              <span id="detailDetractors" class="text-sm font-extrabold text-slate-800">1 (3.8%)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAR CHART ESTABLECIMIENTOS -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm lg:col-span-2 flex flex-col">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="font-bold text-slate-800 text-sm">Desempeño y NPS por Establecimiento Educacional</h3>
+              <p class="text-xs text-slate-500 font-light">Comparativa de NPS Score (+100 máx) y Satisfacción Global (%)</p>
+            </div>
+          </div>
+          <div class="flex-1 min-h-[220px]">
+            <canvas id="schoolsBarChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CHART DIMENSIONES SATISFACCION -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-bold text-slate-800 text-sm">Porcentaje de Satisfacción Positiva (Notas 4 y 5) por Dimensión</h3>
+            <p class="text-xs text-slate-500 font-light">Línea de corte de cumplimiento Corfo: $\ge 75\%$</p>
+          </div>
+          <span class="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-1 rounded-full">
+            Todas sobre 75%
+          </span>
+        </div>
+        <div class="h-[280px]">
+          <canvas id="dimensionsBarChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: EVALUACIÓN POR DIMENSIONES DETALLADA -->
+    <div id="tab-dimensiones" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+          <h3 class="font-bold text-slate-800 text-sm">Matriz de Dimensiones del Programa (Escala 1 a 5)</h3>
+          <span class="text-xs text-slate-500">1: Muy Insatisfecho &bull; 5: Muy Satisfecho</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100 text-slate-600 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-200">
+                <th class="p-3">Categoría</th>
+                <th class="p-3">Ítem Evaluado</th>
+                <th class="p-3 text-center">Media (1-5)</th>
+                <th class="p-3 text-center">5 (Muy Sat)</th>
+                <th class="p-3 text-center">4 (Sat)</th>
+                <th class="p-3 text-center">3 (Neutral)</th>
+                <th class="p-3 text-center">1-2 (Insat)</th>
+                <th class="p-3 text-center">% Sat (4-5)</th>
+                <th class="p-3 text-center">NPS Dim</th>
+              </tr>
+            </thead>
+            <tbody id="dimTableBody" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: RETROALIMENTACIÓN CUALITATIVA -->
+    <div id="tab-feedback" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-slate-800 text-sm">Testimonios y Retroalimentación de Participantes</h3>
+          <p class="text-xs text-slate-500 font-light">Respuestas transcritas de las 3 preguntas cualitativas del instrumento</p>
+        </div>
+        <input type="text" id="feedbackSearch" oninput="renderFeedback()" placeholder="Buscar en comentarios..." class="text-xs bg-white border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 shadow-sm">
+      </div>
+
+      <div id="feedbackContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Renderizado dinámico de tarjetas de feedback -->
+      </div>
+    </div>
+
+    <!-- TAB 4: BASE DE RESPUESTAS INDIVIDUALES -->
+    <div id="tab-respuestas" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-200 bg-slate-50 flex flex-wrap justify-between items-center gap-3">
+          <div>
+            <h3 class="font-bold text-slate-800 text-sm">Registro Maestro de Encuestas Individuales</h3>
+            <p class="text-xs text-slate-500">Total de 26 participantes encuestados</p>
+          </div>
+          <input type="text" id="surveySearch" oninput="renderSurveyTable()" placeholder="Buscar por colegio, rol o nombre..." class="text-xs bg-white border border-slate-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 shadow-sm">
+        </div>
+        <div class="overflow-x-auto max-h-[600px]">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead class="sticky top-0 bg-slate-100 shadow-sm z-10">
+              <tr class="text-slate-600 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-200">
+                <th class="p-3 text-center">ID</th>
+                <th class="p-3">Establecimiento</th>
+                <th class="p-3">Rol</th>
+                <th class="p-3 text-center">NPS</th>
+                <th class="p-3 text-center">Tipo</th>
+                <th class="p-3 text-center">Bootcamps</th>
+                <th class="p-3 text-center">Mentorías</th>
+                <th class="p-3 text-center">Territorio</th>
+                <th class="p-3 text-center">Mentores</th>
+                <th class="p-3 text-center">Bitácora</th>
+                <th class="p-3 text-center">Pitch</th>
+                <th class="p-3 text-center">Prom. Dim</th>
+              </tr>
+            </thead>
+            <tbody id="surveyTableBody" class="divide-y divide-slate-100 text-slate-700">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-1">
+      <p><strong>Programa Speakers En Verde Calama 2026</strong> &bull; Código Corfo Viraliza Formación 25VIRTL-307467 &bull; Provincia de El Loa</p>
+      <p class="text-slate-400">Dashboard listo para GitHub Pages &bull; Diseñado con Tailwind CSS, Chart.js y Lucide Icons</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPT DE DATOS Y LÓGICA -->
+  <script>
+    // Datos integrados directamente
+    const rawData = {"metadata": {"project": "Speakers En Verde Calama 2026", "instrument": "Viraliza Formación Código 25VIRTL-307467", "funder": "Comité Corfo Antofagasta", "territory": "Calama, Provincia de El Loa, Región de Antofagasta", "year": 2026, "total_evaluations": 26, "date_generated": "Noviembre 2026"}, "kpis": {"total_surveys": 26, "promoters": 23, "pct_promoters": 88.46, "passives": 2, "pct_passives": 7.69, "detractors": 1, "pct_detractors": 3.85, "nps_score": 84.62, "avg_nps": 9.35, "meta_1_promoters_pct": 88.46, "meta_2_satisfied_pct": 88.42, "meta_2_satisfied_count": 275, "meta_2_total_responses": 311, "overall_dim_mean": 4.5}, "by_school": [{"school": "Colegio Chuquicamata", "count": 6, "promoters": 6, "passives": 0, "detractors": 0, "nps": 100.0, "avg_nps_score": 9.67, "avg_dim_score": 4.68, "pct_satisfied": 93.1}, {"school": "Colegio Ecológico Montessori", "count": 5, "promoters": 3, "passives": 1, "detractors": 1, "nps": 40.0, "avg_nps_score": 8.0, "avg_dim_score": 4.47, "pct_satisfied": 93.3}, {"school": "Liceo Bicentenario Politécnico Cesáreo Aguirre", "count": 6, "promoters": 6, "passives": 0, "detractors": 0, "nps": 100.0, "avg_nps_score": 10.0, "avg_dim_score": 4.68, "pct_satisfied": 94.4}, {"school": "Liceo Francisco de Aguirre B-8", "count": 4, "promoters": 3, "passives": 1, "detractors": 0, "nps": 75.0, "avg_nps_score": 8.75, "avg_dim_score": 3.69, "pct_satisfied": 56.2}, {"school": "Liceo Minero América", "count": 5, "promoters": 5, "passives": 0, "detractors": 0, "nps": 100.0, "avg_nps_score": 10.0, "avg_dim_score": 4.75, "pct_satisfied": 96.7}], "by_role": [{"role": "Docente Líder", "count": 4, "promoters": 4, "passives": 0, "detractors": 0, "nps": 100.0, "avg_nps_score": 10.0}, {"role": "Estudiante", "count": 22, "promoters": 19, "passives": 2, "detractors": 1, "nps": 81.8, "avg_nps_score": 9.23}], "dimensions": [{"code": "D1_1_Bootcamps", "category": "Módulos y Contenidos", "name": "Bootcamps de Innovación y Expresión Escénica", "mean": 4.35, "median": 5, "std": 1.06, "count": 26, "count_5": 16, "count_4": 6, "count_3": 2, "count_2": 1, "count_1": 1, "pct_satisfied": 84.6, "nps_dim": 46.2}, {"code": "D1_2_Mentorias", "category": "Módulos y Contenidos", "name": "Mentorías Técnicas (Modelos, Liderazgo, Prototipo)", "mean": 4.42, "median": 5, "std": 0.9, "count": 26, "count_5": 17, "count_4": 4, "count_3": 4, "count_2": 1, "count_1": 0, "pct_satisfied": 80.8, "nps_dim": 46.2}, {"code": "D1_3_Pertinencia_Territorial", "category": "Módulos y Contenidos", "name": "Pertinencia Territorial y Ambiental (El Loa)", "mean": 4.62, "median": 5, "std": 0.57, "count": 26, "count_5": 17, "count_4": 8, "count_3": 1, "count_2": 0, "count_1": 0, "pct_satisfied": 96.2, "nps_dim": 61.5}, {"code": "D2_1_Claridad_Mentores", "category": "Metodología y Acompañamiento", "name": "Desempeño y Claridad Pedagógica de Mentores", "mean": 4.69, "median": 5, "std": 0.55, "count": 26, "count_5": 19, "count_4": 6, "count_3": 1, "count_2": 0, "count_1": 0, "pct_satisfied": 96.2, "nps_dim": 69.2}, {"code": "D2_2_Utilidad_Bitacora", "category": "Metodología y Acompañamiento", "name": "Utilidad de la Bitácora de Proyecto", "mean": 4.19, "median": 5, "std": 1.06, "count": 26, "count_5": 14, "count_4": 6, "count_3": 3, "count_2": 3, "count_1": 0, "pct_satisfied": 76.9, "nps_dim": 30.8}, {"code": "D2_3_Trabajo_Colaborativo", "category": "Metodología y Acompañamiento", "name": "Fomento de Colaboración, Inclusión y Liderazgo", "mean": 4.5, "median": 5, "std": 0.81, "count": 26, "count_5": 17, "count_4": 6, "count_3": 2, "count_2": 1, "count_1": 0, "pct_satisfied": 88.5, "nps_dim": 53.8}, {"code": "D3_1_Organizacion_Horarios", "category": "Recursos y Logística", "name": "Organización General y Cumplimiento de Horarios", "mean": 4.23, "median": 4, "std": 0.86, "count": 26, "count_5": 12, "count_4": 9, "count_3": 4, "count_2": 1, "count_1": 0, "pct_satisfied": 80.8, "nps_dim": 26.9}, {"code": "D3_2_Recursos_Materiales", "category": "Recursos y Logística", "name": "Recursos Materiales Asignados para Prototipos", "mean": 4.62, "median": 5, "std": 0.7, "count": 26, "count_5": 18, "count_4": 7, "count_3": 0, "count_2": 1, "count_1": 0, "pct_satisfied": 96.2, "nps_dim": 65.4}, {"code": "D3_3_Espacios_Alimentacion", "category": "Recursos y Logística", "name": "Espacios de Encuentro, Traslados y Coffee Break", "mean": 4.76, "median": 5, "std": 0.52, "count": 25, "count_5": 20, "count_4": 4, "count_3": 1, "count_2": 0, "count_1": 0, "pct_satisfied": 96.0, "nps_dim": 76.0}, {"code": "D4_1_Estructuracion_Canvas", "category": "Impacto y Aplicación", "name": "Estructuración de Solución (Modelo Canvas)", "mean": 4.58, "median": 5, "std": 0.64, "count": 26, "count_5": 17, "count_4": 7, "count_3": 2, "count_2": 0, "count_1": 0, "pct_satisfied": 92.3, "nps_dim": 57.7}, {"code": "D4_2_Desarrollo_Prototipo", "category": "Impacto y Aplicación", "name": "Desarrollo del Prototipo Inicial de la Idea", "mean": 4.42, "median": 5, "std": 0.86, "count": 26, "count_5": 16, "count_4": 6, "count_3": 3, "count_2": 1, "count_1": 0, "pct_satisfied": 84.6, "nps_dim": 46.2}, {"code": "D4_3_Oratoria_Pitch", "category": "Impacto y Aplicación", "name": "Mejora de Habilidades de Oratoria (Pitch Day)", "mean": 4.62, "median": 5, "std": 0.8, "count": 26, "count_5": 20, "count_4": 3, "count_3": 2, "count_2": 1, "count_1": 0, "pct_satisfied": 88.5, "nps_dim": 65.4}], "surveys": [{"ID_Encuesta": 1, "Archivo_Origen": "Chuqui_1.pdf", "Establecimiento": "Colegio Chuquicamata", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 4, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "El encontrar posibles soluciones a mis problemáticas", "Aspectos_Mejorar": "La interacción entre los demás", "Comentarios_Adicionales": "Me gusto mucho los mentores en su forma de acompañarnos en este proceso", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.916666666666667}, {"ID_Encuesta": 2, "Archivo_Origen": "Chuqui_2.pdf", "Establecimiento": "Colegio Chuquicamata", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 9, "D1_1_Bootcamps": 3, "D1_2_Mentorias": 4, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 2, "D2_3_Trabajo_Colaborativo": 4, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 4, "Mayor_Valor": "Que me explicaron el pitch y modelos de oratoria", "Aspectos_Mejorar": "la de teatro", "Comentarios_Adicionales": "me gusto el programa me enseño cosas que me sirvieron demasiado muchas gracias :)", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.333333333333333}, {"ID_Encuesta": 3, "Archivo_Origen": "Chuqui_3.pdf", "Establecimiento": "Colegio Chuquicamata", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 3, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "los bootcamps", "Aspectos_Mejorar": "tutorias más constantes", "Comentarios_Adicionales": "enseña habilidades muy útiles", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.833333333333333}, {"ID_Encuesta": 4, "Archivo_Origen": "Chuqui_4.pdf", "Establecimiento": "Colegio Chuquicamata", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "los BOOTCAMP", "Aspectos_Mejorar": "TUTORIAS", "Comentarios_Adicionales": "son muy simpaticos y enseñan muy bien", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 5.0}, {"ID_Encuesta": 5, "Archivo_Origen": "Chuqui_5.pdf", "Establecimiento": "Colegio Chuquicamata", "Rol": "Estudiante", "Nombre": "Julieta Ibacache", "NPS_Recomendacion": 9, "D1_1_Bootcamps": 4, "D1_2_Mentorias": 3, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 4, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 4, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "LA CONFIANZA Y EL TRABAJO EN EQUIPO", "Aspectos_Mejorar": "NINGUN ASPECTO NECESARIO", "Comentarios_Adicionales": "ME ENCANTA LA FORMA EN LA QUE TRABAJAN.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.5}, {"ID_Encuesta": 6, "Archivo_Origen": "Chuqui_6.pdf", "Establecimiento": "Colegio Chuquicamata", "Rol": "Docente Líder", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 4, "D2_2_Utilidad_Bitacora": 2, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 4, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "las tutorias con cecilia y los Bootcamps", "Aspectos_Mejorar": "habia más trabajo con los otros colegios", "Comentarios_Adicionales": "Agradezco este espacio en la zona ya que potencia la innovación y además de entregar herramientas a jóvenes y docentes", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.5}, {"ID_Encuesta": 7, "Archivo_Origen": "Cesareo_Aguirre.pdf (1)", "Establecimiento": "Liceo Bicentenario Politécnico Cesáreo Aguirre", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 3, "D1_2_Mentorias": 3, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 4, "D2_3_Trabajo_Colaborativo": 4, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 4, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "la comunicación", "Aspectos_Mejorar": "el tiempo", "Comentarios_Adicionales": "es muy entretenido", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.25}, {"ID_Encuesta": 8, "Archivo_Origen": "Cesareo_Aguirre.pdf (2)", "Establecimiento": "Liceo Bicentenario Politécnico Cesáreo Aguirre", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 4, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 4, "D3_3_Espacios_Alimentacion": 4.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Los consejos", "Aspectos_Mejorar": "Las dinámicas y juegos", "Comentarios_Adicionales": "Todo Bien", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.666666666666667}, {"ID_Encuesta": 9, "Archivo_Origen": "Cesareo_Aguirre.pdf (3)", "Establecimiento": "Liceo Bicentenario Politécnico Cesáreo Aguirre", "Rol": "Estudiante", "Nombre": "Gianfranco / Katherine", "NPS_Recomendacion": 10, "D1_1_Bootcamps": 1, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 4, "D2_2_Utilidad_Bitacora": 4, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 3, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 4, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "El conocimiento de diversos puntos de vista sobre un problema", "Aspectos_Mejorar": "Más precisión a los estudiantes", "Comentarios_Adicionales": "Fue una experiencia muy satisfactoria y útil", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.166666666666667}, {"ID_Encuesta": 10, "Archivo_Origen": "Cesareo_Aguirre.pdf (4)", "Establecimiento": "Liceo Bicentenario Politécnico Cesáreo Aguirre", "Rol": "Docente Líder", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": null, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "LA EJEMPLIFICACIÓN DEL CANVA PARA ESTUDIANTES", "Aspectos_Mejorar": "Mejorar los tiempos con liceos ya que no todos tenemos un espacio pertinente", "Comentarios_Adicionales": "UNA MUY BUENA INSTANCIA PARA PROYECTOS INTERDISCIPLINARES", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 5.0}, {"ID_Encuesta": 11, "Archivo_Origen": "Cesareo_Aguirre.pdf (5)", "Establecimiento": "Liceo Bicentenario Politécnico Cesáreo Aguirre", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Cuando teníamos salida todos los liceos juntos y nos explicaban todo detalladamente", "Aspectos_Mejorar": "las actividades y tener un poco más de reuniones todos juntos", "Comentarios_Adicionales": "Que explican muy bien todos los temas y no es para nada aburrido.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 5.0}, {"ID_Encuesta": 12, "Archivo_Origen": "Cesareo_Aguirre.pdf (6)", "Establecimiento": "Liceo Bicentenario Politécnico Cesáreo Aguirre", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Cuando nos juntábamos y hacíamos actividades junto a los otros liceos", "Aspectos_Mejorar": "Los horarios cuando nos reunimos", "Comentarios_Adicionales": "Se entendía muy bien lo que explican y el coffee break es muy bueno.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 5.0}, {"ID_Encuesta": 13, "Archivo_Origen": "Francisco_de_Aguirre.pdf (1)", "Establecimiento": "Liceo Francisco de Aguirre B-8", "Rol": "Docente Líder", "Nombre": "Janett Balboa L.", "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Las mentorías y Bootcamps", "Aspectos_Mejorar": null, "Comentarios_Adicionales": "Excelente proyecto.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 5.0}, {"ID_Encuesta": 14, "Archivo_Origen": "Francisco_de_Aguirre.pdf (2)", "Establecimiento": "Liceo Francisco de Aguirre B-8", "Rol": "Estudiante", "Nombre": "Rene Moises Ruiba Lobo", "NPS_Recomendacion": 9, "D1_1_Bootcamps": 4, "D1_2_Mentorias": 4, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 4, "D2_2_Utilidad_Bitacora": 3, "D2_3_Trabajo_Colaborativo": 3, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 4, "D3_3_Espacios_Alimentacion": 4.0, "D4_1_Estructuracion_Canvas": 3, "D4_2_Desarrollo_Prototipo": 3, "D4_3_Oratoria_Pitch": 4, "Mayor_Valor": "Las mentorías, que venga alguien a guiarnos es de mucha relevancia", "Aspectos_Mejorar": "Los equipos, el numero 5 es bueno pero no todos los miembros estan 100% al proyecto", "Comentarios_Adicionales": "Felicitaciones por hacer que niño/adolencente puedan trabajar con proyecto de esta magnitud e importancia", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 3.6666666666666665}, {"ID_Encuesta": 15, "Archivo_Origen": "Francisco_de_Aguirre.pdf (3)", "Establecimiento": "Liceo Francisco de Aguirre B-8", "Rol": "Estudiante", "Nombre": "Francisca Barraza", "NPS_Recomendacion": 9, "D1_1_Bootcamps": 4, "D1_2_Mentorias": 4, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 4, "D2_2_Utilidad_Bitacora": 3, "D2_3_Trabajo_Colaborativo": 3, "D3_1_Organizacion_Horarios": 3, "D3_2_Recursos_Materiales": 4, "D3_3_Espacios_Alimentacion": 4.0, "D4_1_Estructuracion_Canvas": 4, "D4_2_Desarrollo_Prototipo": 3, "D4_3_Oratoria_Pitch": 3, "Mayor_Valor": "La mentoria del pitch.", "Aspectos_Mejorar": "Ninguna, están bien.", "Comentarios_Adicionales": "Las mentorias han ayudado al grupo a mejorar.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 3.5833333333333335}, {"ID_Encuesta": 16, "Archivo_Origen": "Francisco_de_Aguirre.pdf (4)", "Establecimiento": "Liceo Francisco de Aguirre B-8", "Rol": "Estudiante", "Nombre": "Andrés Felipe Garrido", "NPS_Recomendacion": 7, "D1_1_Bootcamps": 2, "D1_2_Mentorias": 3, "D1_3_Pertinencia_Territorial": 3, "D2_1_Claridad_Mentores": 3, "D2_2_Utilidad_Bitacora": 2, "D2_3_Trabajo_Colaborativo": 2, "D3_1_Organizacion_Horarios": 2, "D3_2_Recursos_Materiales": 2, "D3_3_Espacios_Alimentacion": 3.0, "D4_1_Estructuracion_Canvas": 3, "D4_2_Desarrollo_Prototipo": 3, "D4_3_Oratoria_Pitch": 2, "Mayor_Valor": "los eventos que teniamos son buenos y puedo conocer a varias personas de otros establecimiento", "Aspectos_Mejorar": "ninguna todo esta bien!", "Comentarios_Adicionales": "mis felicitaciones porque estan mejorando Calama", "Clasificacion_NPS": "Pasivo", "Promedio_Dimensiones": 2.5}, {"ID_Encuesta": 17, "Archivo_Origen": "liceo_minero_1.pdf", "Establecimiento": "Liceo Minero América", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 4, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 3, "D3_2_Recursos_Materiales": 4, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 4, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "El mejorar la oratoria", "Aspectos_Mejorar": "En si nada ya esta bien así", "Comentarios_Adicionales": "Excelente metodologia de enseñanza.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.583333333333333}, {"ID_Encuesta": 18, "Archivo_Origen": "liceo_minero_2.pdf", "Establecimiento": "Liceo Minero América", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 4, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 4, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 4, "D4_2_Desarrollo_Prototipo": 4, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "El aprendizaje a través de un mentor con experiencia y la vinculación con otros establecimientos", "Aspectos_Mejorar": "Planificar mejor los tiempos a mi gusto trabajar menos con cartulinas y más con otro tipo de actividades", "Comentarios_Adicionales": "Es un programa muy interactivo y muy valioso para el crecimiento personal.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.583333333333333}, {"ID_Encuesta": 19, "Archivo_Origen": "Liceo_Minero_3.pdf", "Establecimiento": "Liceo Minero América", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 4, "D4_3_Oratoria_Pitch": 3, "Mayor_Valor": "La muy buena organización y clara explicacion aparte de ser muy éticos", "Aspectos_Mejorar": "El poder focalisar un poquito más con los otros grupos", "Comentarios_Adicionales": "Un muy buen programa la verdad me ha ayudado a mejorar muchas cosas.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.666666666666667}, {"ID_Encuesta": 20, "Archivo_Origen": "liceo_minero_4.pdf", "Establecimiento": "Liceo Minero América", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "En la cual nos mostraba de como hacer una idea de como concretarla y de ahi poder explicarlo de mejor manera", "Aspectos_Mejorar": "En si más dinamicas, fueron muy entretenidas y se aprendio mejor.", "Comentarios_Adicionales": "Muchas Gracias x su tiempo, por su enseña ya que aprendí bastante, super simpaticos todos/as", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 5.0}, {"ID_Encuesta": 21, "Archivo_Origen": "Liceo_Minero_5.pdf", "Establecimiento": "Liceo Minero América", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 4, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Cuando nos ayudaban en dar ideas", "Aspectos_Mejorar": "Yo creo que mas dinamicas", "Comentarios_Adicionales": "Gracias por la ayuda en la que nos han dado, en ayudarnos con nuestro proyecto.", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.916666666666667}, {"ID_Encuesta": 22, "Archivo_Origen": "montessori.pdf (1)", "Establecimiento": "Colegio Ecológico Montessori", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 5, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 5, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Las herramientas para vender o promocionar algo", "Aspectos_Mejorar": "Ninguno la verdad, quedé satisfecho.", "Comentarios_Adicionales": "Muy Bueno el programa SPEAKERS", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 5.0}, {"ID_Encuesta": 23, "Archivo_Origen": "montessori.pdf (2)", "Establecimiento": "Colegio Ecológico Montessori", "Rol": "Estudiante", "Nombre": "Cristóbal Araya", "NPS_Recomendacion": 4, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 2, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 4, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 4, "D4_2_Desarrollo_Prototipo": 2, "D4_3_Oratoria_Pitch": 4, "Mayor_Valor": "Que me enseñaron a explicar", "Aspectos_Mejorar": "Que no me saquen tanto de clases", "Comentarios_Adicionales": "Los speakers son amables y te ayudan", "Clasificacion_NPS": "Detractor", "Promedio_Dimensiones": 4.083333333333333}, {"ID_Encuesta": 24, "Archivo_Origen": "montessori.pdf (3)", "Establecimiento": "Colegio Ecológico Montessori", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 9, "D1_1_Bootcamps": 4, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 5, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 4, "D2_3_Trabajo_Colaborativo": 4, "D3_1_Organizacion_Horarios": 3, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 4, "D4_2_Desarrollo_Prototipo": 4, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "La aceptación y escucha", "Aspectos_Mejorar": "Lo lúdico", "Comentarios_Adicionales": "Muy bien implementado", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.416666666666667}, {"ID_Encuesta": 25, "Archivo_Origen": "montessori.pdf (4)", "Establecimiento": "Colegio Ecológico Montessori", "Rol": "Estudiante", "Nombre": null, "NPS_Recomendacion": 7, "D1_1_Bootcamps": 5, "D1_2_Mentorias": 3, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 4, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 4, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 5, "D3_3_Espacios_Alimentacion": 5.0, "D4_1_Estructuracion_Canvas": 4, "D4_2_Desarrollo_Prototipo": 5, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Las actividades que se hacen en las juntas", "Aspectos_Mejorar": "Lo lúdico", "Comentarios_Adicionales": null, "Clasificacion_NPS": "Pasivo", "Promedio_Dimensiones": 4.416666666666667}, {"ID_Encuesta": 26, "Archivo_Origen": "montessori.pdf (5)", "Establecimiento": "Colegio Ecológico Montessori", "Rol": "Docente Líder", "Nombre": null, "NPS_Recomendacion": 10, "D1_1_Bootcamps": 4, "D1_2_Mentorias": 5, "D1_3_Pertinencia_Territorial": 4, "D2_1_Claridad_Mentores": 5, "D2_2_Utilidad_Bitacora": 5, "D2_3_Trabajo_Colaborativo": 5, "D3_1_Organizacion_Horarios": 4, "D3_2_Recursos_Materiales": 4, "D3_3_Espacios_Alimentacion": 4.0, "D4_1_Estructuracion_Canvas": 4, "D4_2_Desarrollo_Prototipo": 4, "D4_3_Oratoria_Pitch": 5, "Mayor_Valor": "Los bootcamps, era como resumir o sintetizar la información o estrategias necesarias para llevar a cabo el producto", "Aspectos_Mejorar": "Quizas considerar más relatores durante el seguimiento para ver distintas perspectivas.", "Comentarios_Adicionales": "Mejorar los coffee", "Clasificacion_NPS": "Promotor", "Promedio_Dimensiones": 4.416666666666667}]};
+
+    let filteredSurveys = [...rawData.surveys];
+    let donutChartInstance = null;
+    let schoolsChartInstance = null;
+    let dimensionsChartInstance = null;
+
+    function initDashboard() {
+      lucide.createIcons();
+      updateKpis();
+      renderCharts();
+      renderDimTable();
+      renderFeedback();
+      renderSurveyTable();
+    }
+
+    function switchTab(tabId) {
+      ['tab-general', 'tab-dimensiones', 'tab-feedback', 'tab-respuestas'].forEach(t => {
+        document.getElementById(t).classList.add('hidden');
+        document.getElementById('btn-' + t).className = 'pb-3 border-b-2 border-transparent hover:text-slate-700 flex items-center gap-2';
+      });
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById('btn-' + tabId).className = 'pb-3 border-b-2 border-emerald-600 text-emerald-700 font-bold flex items-center gap-2';
+      lucide.createIcons();
+    }
+
+    function applyFilters() {
+      const school = document.getElementById('schoolFilter').value;
+      const role = document.getElementById('roleFilter').value;
+
+      filteredSurveys = rawData.surveys.filter(s => {
+        const matchSchool = (school === 'ALL' || s.Establecimiento.includes(school) || (school.includes('Cesáreo') && s.Establecimiento.includes('Cesáreo')));
+        const matchRole = (role === 'ALL' || s.Rol === role);
+        return matchSchool && matchRole;
+      });
+
+      document.getElementById('filteredCountBadge').innerText = `${filteredSurveys.length} de ${rawData.surveys.length} encuestas`;
+
+      updateKpis();
+      renderCharts();
+      renderFeedback();
+      renderSurveyTable();
+    }
+
+    function resetFilters() {
+      document.getElementById('schoolFilter').value = 'ALL';
+      document.getElementById('roleFilter').value = 'ALL';
+      applyFilters();
+    }
+
+    function updateKpis() {
+      const total = filteredSurveys.length;
+      if (total === 0) {
+        document.getElementById('kpiNpsScore').innerText = '0.0';
+        return;
+      }
+
+      const promoters = filteredSurveys.filter(s => s.Clasificacion_NPS === 'Promotor').length;
+      const passives = filteredSurveys.filter(s => s.Clasificacion_NPS === 'Pasivo').length;
+      const detractors = filteredSurveys.filter(s => s.Clasificacion_NPS === 'Detractor').length;
+
+      const nps = ((promoters - detractors) / total * 100).toFixed(1);
+      const meta1 = (promoters / total * 100).toFixed(1);
+
+      const dimCols = ['D1_1_Bootcamps', 'D1_2_Mentorias', 'D1_3_Pertinencia_Territorial', 'D2_1_Claridad_Mentores', 'D2_2_Utilidad_Bitacora', 'D2_3_Trabajo_Colaborativo', 'D3_1_Organizacion_Horarios', 'D3_2_Recursos_Materiales', 'D3_3_Espacios_Alimentacion', 'D4_1_Estructuracion_Canvas', 'D4_2_Desarrollo_Prototipo', 'D4_3_Oratoria_Pitch'];
+      
+      let totalCells = 0;
+      let satCells = 0;
+      let sumDim = 0;
+      let sumNps = 0;
+
+      filteredSurveys.forEach(s => {
+        sumNps += s.NPS_Recomendacion;
+        dimCols.forEach(col => {
+          const v = s[col];
+          if (v !== null && v !== undefined && !isNaN(v)) {
+            totalCells++;
+            sumDim += v;
+            if (v >= 4) satCells++;
+          }
+        });
+      });
+
+      const meta2 = totalCells > 0 ? (satCells / totalCells * 100).toFixed(1) : 0;
+      const avgNps = (sumNps / total).toFixed(2);
+      const dimMean = totalCells > 0 ? (sumDim / totalCells).toFixed(2) : 0;
+
+      document.getElementById('kpiNpsScore').innerText = (nps > 0 ? '+' : '') + nps;
+      document.getElementById('kpiMeta1').innerText = meta1 + '%';
+      document.getElementById('kpiPromotersDetail').innerText = `${promoters} de ${total} (Notas 9-10)`;
+      document.getElementById('kpiMeta2').innerText = meta2 + '%';
+      document.getElementById('kpiMeta2Detail').innerText = `${satCells} de ${totalCells} respuestas`;
+      document.getElementById('kpiAvgNps').innerText = avgNps;
+      document.getElementById('kpiDimMean').innerText = `${dimMean} / 5.0`;
+
+      document.getElementById('detailPromoters').innerText = `${promoters} (${(promoters/total*100).toFixed(1)}%)`;
+      document.getElementById('detailPassives').innerText = `${passives} (${(passives/total*100).toFixed(1)}%)`;
+      document.getElementById('detailDetractors').innerText = `${detractors} (${(detractors/total*100).toFixed(1)}%)`;
+    }
+
+    function renderCharts() {
+      const total = filteredSurveys.length;
+      const promoters = filteredSurveys.filter(s => s.Clasificacion_NPS === 'Promotor').length;
+      const passives = filteredSurveys.filter(s => s.Clasificacion_NPS === 'Pasivo').length;
+      const detractors = filteredSurveys.filter(s => s.Clasificacion_NPS === 'Detractor').length;
+
+      // 1. DONUT CHART
+      if (donutChartInstance) donutChartInstance.destroy();
+      const ctxDonut = document.getElementById('npsDonutChart').getContext('2d');
+      donutChartInstance = new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+          labels: ['Promotores (9-10)', 'Pasivos (7-8)', 'Detractores (0-6)'],
+          datasets: [{
+            data: [promoters, passives, detractors],
+            backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+            hoverOffset: 6,
+            borderWidth: 2,
+            borderColor: '#FFFFFF'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          cutout: '72%'
+        }
+      });
+
+      // 2. SCHOOLS CHART
+      if (schoolsChartInstance) schoolsChartInstance.destroy();
+      const ctxSchools = document.getElementById('schoolsBarChart').getContext('2d');
+      const schoolNames = rawData.by_school.map(s => s.school.replace('Liceo Bicentenario Politécnico ', 'Liceo '));
+      const schoolNps = rawData.by_school.map(s => s.nps);
+      const schoolSat = rawData.by_school.map(s => s.pct_satisfied);
+
+      schoolsChartInstance = new Chart(ctxSchools, {
+        type: 'bar',
+        data: {
+          labels: schoolNames,
+          datasets: [
+            {
+              label: 'NPS Score (pts)',
+              data: schoolNps,
+              backgroundColor: '#10B981',
+              borderRadius: 6,
+              barPercentage: 0.6
+            },
+            {
+              label: '% Satisfacción (Notas 4-5)',
+              data: schoolSat,
+              backgroundColor: '#1B365D',
+              borderRadius: 6,
+              barPercentage: 0.6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, max: 100 }
+          },
+          plugins: {
+            legend: { position: 'top' }
+          }
+        }
+      });
+
+      // 3. DIMENSIONS CHART
+      if (dimensionsChartInstance) dimensionsChartInstance.destroy();
+      const ctxDims = document.getElementById('dimensionsBarChart').getContext('2d');
+      const dimLabels = rawData.dimensions.map(d => d.name);
+      const dimSat = rawData.dimensions.map(d => d.pct_satisfied);
+
+      dimensionsChartInstance = new Chart(ctxDims, {
+        type: 'bar',
+        data: {
+          labels: dimLabels,
+          datasets: [{
+            label: '% Satisfacción (Satisfecho / Muy Satisfecho)',
+            data: dimSat,
+            backgroundColor: dimSat.map(v => v >= 90 ? '#059669' : (v >= 80 ? '#10B981' : '#3B82F6')),
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          scales: {
+            x: { beginAtZero: true, max: 100 }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+
+    function renderDimTable() {
+      const tbody = document.getElementById('dimTableBody');
+      tbody.innerHTML = rawData.dimensions.map(d => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="p-3 text-slate-500">${d.category}</td>
+          <td class="p-3 font-semibold text-slate-800">${d.name}</td>
+          <td class="p-3 text-center font-bold text-slate-900">${d.mean}</td>
+          <td class="p-3 text-center">${d.count_5}</td>
+          <td class="p-3 text-center">${d.count_4}</td>
+          <td class="p-3 text-center text-slate-400">${d.count_3}</td>
+          <td class="p-3 text-center text-slate-400">${d.count_2 + d.count_1}</td>
+          <td class="p-3 text-center">
+            <span class="inline-block px-2 py-0.5 rounded-full font-bold ${d.pct_satisfied >= 90 ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">
+              ${d.pct_satisfied}%
+            </span>
+          </td>
+          <td class="p-3 text-center font-semibold text-emerald-700">+${d.nps_dim}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderFeedback() {
+      const query = (document.getElementById('feedbackSearch')?.value || '').toLowerCase();
+      const container = document.getElementById('feedbackContainer');
+      
+      const filtered = filteredSurveys.filter(s => {
+        return (s.Mayor_Valor && s.Mayor_Valor.toLowerCase().includes(query)) ||
+               (s.Aspectos_Mejorar && s.Aspectos_Mejorar.toLowerCase().includes(query)) ||
+               (s.Comentarios_Adicionales && s.Comentarios_Adicionales.toLowerCase().includes(query)) ||
+               s.Establecimiento.toLowerCase().includes(query);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="col-span-full text-center py-8 text-slate-400 text-sm">No se encontraron comentarios con el filtro actual.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(s => `
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3 hover:border-slate-300 transition">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <div>
+              <span class="font-bold text-slate-800 text-xs block">${s.Establecimiento}</span>
+              <span class="text-[10px] text-slate-400 font-medium">${s.Rol} ${s.Nombre ? '(' + s.Nombre + ')' : ''}</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-xs font-extrabold ${s.Clasificacion_NPS === 'Promotor' ? 'bg-emerald-100 text-emerald-800' : (s.Clasificacion_NPS === 'Pasivo' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800')}">
+              NPS ${s.NPS_Recomendacion}
+            </span>
+          </div>
+
+          ${s.Mayor_Valor ? `
+            <div>
+              <span class="text-[10px] font-bold uppercase text-emerald-700 tracking-wider block">⭐ Mayor Valor:</span>
+              <p class="text-xs text-slate-700 italic mt-0.5">"${s.Mayor_Valor}"</p>
+            </div>
+          ` : ''}
+
+          ${s.Aspectos_Mejorar ? `
+            <div>
+              <span class="text-[10px] font-bold uppercase text-amber-700 tracking-wider block">🔧 A Mejorar:</span>
+              <p class="text-xs text-slate-700 italic mt-0.5">"${s.Aspectos_Mejorar}"</p>
+            </div>
+          ` : ''}
+
+          ${s.Comentarios_Adicionales ? `
+            <div>
+              <span class="text-[10px] font-bold uppercase text-blue-700 tracking-wider block">💬 Comentarios:</span>
+              <p class="text-xs text-slate-700 italic mt-0.5">"${s.Comentarios_Adicionales}"</p>
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    function renderSurveyTable() {
+      const query = (document.getElementById('surveySearch')?.value || '').toLowerCase();
+      const tbody = document.getElementById('surveyTableBody');
+
+      const filtered = filteredSurveys.filter(s => {
+        return s.Establecimiento.toLowerCase().includes(query) ||
+               s.Rol.toLowerCase().includes(query) ||
+               (s.Nombre && s.Nombre.toLowerCase().includes(query)) ||
+               s.ID_Encuesta.toString().includes(query);
+      });
+
+      tbody.innerHTML = filtered.map(s => `
+        <tr class="hover:bg-slate-50 transition">
+          <td class="p-3 text-center font-bold text-slate-500">#${s.ID_Encuesta}</td>
+          <td class="p-3 font-medium text-slate-800">${s.Establecimiento}</td>
+          <td class="p-3 text-slate-600">${s.Rol}</td>
+          <td class="p-3 text-center font-extrabold text-slate-900">${s.NPS_Recomendacion}</td>
+          <td class="p-3 text-center">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${s.Clasificacion_NPS === 'Promotor' ? 'bg-emerald-100 text-emerald-800' : (s.Clasificacion_NPS === 'Pasivo' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800')}">
+              ${s.Clasificacion_NPS}
+            </span>
+          </td>
+          <td class="p-3 text-center font-semibold">${s.D1_1_Bootcamps}</td>
+          <td class="p-3 text-center font-semibold">${s.D1_2_Mentorias}</td>
+          <td class="p-3 text-center font-semibold">${s.D1_3_Pertinencia_Territorial}</td>
+          <td class="p-3 text-center font-semibold">${s.D2_1_Claridad_Mentores}</td>
+          <td class="p-3 text-center font-semibold">${s.D2_2_Utilidad_Bitacora}</td>
+          <td class="p-3 text-center font-semibold">${s.D4_3_Oratoria_Pitch}</td>
+          <td class="p-3 text-center font-bold text-blue-700">${s.Promedio_Dimensiones ? s.Promedio_Dimensiones.toFixed(2) : '-'}</td>
+        </tr>
+      `).join('');
+    }
+
+    window.onload = initDashboard;
+  </script>
+</body>
+</html>
