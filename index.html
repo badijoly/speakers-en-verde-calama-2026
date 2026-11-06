@@ -82,7 +82,7 @@
       box-shadow: 0 15px 35px -5px rgba(34, 197, 94, 0.25);
     }
 
-    /* Estilos del carrusel con arrastre de mouse (Click and Drag) */
+    /* Estilos del carrusel infinito con arrastre de mouse (Click and Drag) */
     .drag-scroll-track {
       cursor: grab;
       user-select: none;
@@ -641,7 +641,7 @@
   </section>
 
   <!-- ========================================================
-       5. SECCIÓN 4: CARRUSEL HORIZONTAL CON ARRASTRE DE MOUSE (CLICK AND DRAG)
+       5. SECCIÓN 4: CARRUSEL HORIZONTAL INFINITO (BIDIRECCIONAL)
   ======================================================== -->
   <section id="proyectos" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t-2 border-white/10 reveal">
     
@@ -651,12 +651,12 @@
         <span class="text-xs font-black tracking-widest text-brand-brightLime">Soluciones territoriales</span>
       </div>
 
-      <!-- Controles de navegación del carrusel -->
+      <!-- Controles de navegación del carrusel infinito -->
       <div class="flex items-center gap-2">
-        <button onclick="scrollProjects(-1)" class="w-9 h-9 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-brand-neonGreen hover:text-black hover:border-brand-neonGreen transition flex items-center justify-center shadow-sm" title="Anterior">
+        <button onclick="scrollProjects(-1)" class="w-9 h-9 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-brand-neonGreen hover:text-black hover:border-brand-neonGreen transition flex items-center justify-center shadow-sm" title="Anterior (infinito)">
           <i data-lucide="chevron-left" class="w-5 h-5"></i>
         </button>
-        <button onclick="scrollProjects(1)" class="w-9 h-9 rounded-xl bg-brand-neonGreen border border-brand-neonGreen text-black hover:bg-brand-brightLime transition flex items-center justify-center shadow-sticker-pink" title="Siguiente">
+        <button onclick="scrollProjects(1)" class="w-9 h-9 rounded-xl bg-brand-neonGreen border border-brand-neonGreen text-black hover:bg-brand-brightLime transition flex items-center justify-center shadow-sticker-pink" title="Siguiente (infinito)">
           <i data-lucide="chevron-right" class="w-5 h-5"></i>
         </button>
       </div>
@@ -673,17 +673,17 @@
       </div>
 
       <span class="text-xs font-bold text-slate-300 hidden md:inline-flex items-center gap-1.5 shrink-0 bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/15 shadow-sm">
-        <i data-lucide="mouse-pointer" class="w-3.5 h-3.5 text-brand-neonGreen animate-pulse"></i>
-        <span>Arrastra con el mouse &rarr;</span>
+        <i data-lucide="infinity" class="w-3.5 h-3.5 text-brand-neonGreen animate-pulse"></i>
+        <span>Carrusel infinito &bull; Arrastra o desliza</span>
       </span>
     </div>
 
-    <!-- CONTENEDOR DEL CARRUSEL HORIZONTAL CON DRAG-TO-SCROLL -->
+    <!-- CONTENEDOR DEL CARRUSEL HORIZONTAL INFINITO -->
     <div class="relative">
       <div id="projectsTrack" class="drag-scroll-track flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 pt-2 px-1 scrollbar-none scroll-smooth">
         
         <!-- FICHA 1: COLEGIO CHUQUICAMATA (PITCH DESTACADO) -->
-        <div class="w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-gradient-to-b from-[#501D78] to-[#3E1361] border-2 border-brand-neonGreen rounded-3xl p-5 sm:p-6 shadow-sticker-green card-comic flex flex-col justify-between">
+        <div class="project-card w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-gradient-to-b from-[#501D78] to-[#3E1361] border-2 border-brand-neonGreen rounded-3xl p-5 sm:p-6 shadow-sticker-green card-comic flex flex-col justify-between" data-index="0">
           <div>
             <!-- Cabecera fotográfica del equipo -->
             <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden mb-4 border border-white/20 shadow-md">
@@ -727,7 +727,7 @@
         </div>
 
         <!-- FICHA 2: COLEGIO ECOLÓGICO MONTESSORI (PITCH DESTACADO) -->
-        <div class="w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-gradient-to-b from-[#501D78] to-[#3E1361] border-2 border-brand-yellow rounded-3xl p-5 sm:p-6 shadow-sticker-yellow card-comic flex flex-col justify-between">
+        <div class="project-card w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-gradient-to-b from-[#501D78] to-[#3E1361] border-2 border-brand-yellow rounded-3xl p-5 sm:p-6 shadow-sticker-yellow card-comic flex flex-col justify-between" data-index="1">
           <div>
             <!-- Cabecera fotográfica del equipo -->
             <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden mb-4 border border-white/20 shadow-md">
@@ -771,7 +771,7 @@
         </div>
 
         <!-- FICHA 3: LICEO FRANCISCO DE AGUIRRE (B-8) -->
-        <div class="w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-[#501D78] border-2 border-white/30 rounded-3xl p-5 sm:p-6 shadow-sticker-white card-comic flex flex-col justify-between">
+        <div class="project-card w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-[#501D78] border-2 border-white/30 rounded-3xl p-5 sm:p-6 shadow-sticker-white card-comic flex flex-col justify-between" data-index="2">
           <div>
             <!-- Cabecera fotográfica del equipo -->
             <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden mb-4 border border-white/20 shadow-md">
@@ -815,7 +815,7 @@
         </div>
 
         <!-- FICHA 4: LICEO CESÁREO AGUIRRE (B-9) -->
-        <div class="w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-[#501D78] border-2 border-white/30 rounded-3xl p-5 sm:p-6 shadow-sticker-pink card-comic flex flex-col justify-between">
+        <div class="project-card w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-[#501D78] border-2 border-white/30 rounded-3xl p-5 sm:p-6 shadow-sticker-pink card-comic flex flex-col justify-between" data-index="3">
           <div>
             <!-- Cabecera fotográfica del equipo -->
             <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden mb-4 border border-white/20 shadow-md">
@@ -859,7 +859,7 @@
         </div>
 
         <!-- FICHA 5: LICEO MINERO AMÉRICA (B-10) -->
-        <div class="w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-[#501D78] border-2 border-white/30 rounded-3xl p-5 sm:p-6 shadow-sticker-green card-comic flex flex-col justify-between">
+        <div class="project-card w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-[#501D78] border-2 border-white/30 rounded-3xl p-5 sm:p-6 shadow-sticker-green card-comic flex flex-col justify-between" data-index="4">
           <div>
             <!-- Cabecera fotográfica del equipo -->
             <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden mb-4 border border-white/20 shadow-md">
@@ -906,11 +906,11 @@
 
       <!-- Indicadores interactivos de paginación (Dots) -->
       <div class="flex justify-center items-center gap-2 mt-4">
-        <button onclick="goToProject(0)" id="dot-0" class="proj-dot w-7 h-2.5 rounded-full bg-brand-brightLime transition-all"></button>
-        <button onclick="goToProject(1)" id="dot-1" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all"></button>
-        <button onclick="goToProject(2)" id="dot-2" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all"></button>
-        <button onclick="goToProject(3)" id="dot-3" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all"></button>
-        <button onclick="goToProject(4)" id="dot-4" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all"></button>
+        <button onclick="goToProject(0)" id="dot-0" class="proj-dot w-7 h-2.5 rounded-full bg-brand-brightLime transition-all" title="Colegio Chuquicamata"></button>
+        <button onclick="goToProject(1)" id="dot-1" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all" title="Colegio Ecológico Montessori"></button>
+        <button onclick="goToProject(2)" id="dot-2" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all" title="Liceo Francisco de Aguirre"></button>
+        <button onclick="goToProject(3)" id="dot-3" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all" title="Liceo Cesáreo Aguirre"></button>
+        <button onclick="goToProject(4)" id="dot-4" class="proj-dot w-2.5 h-2.5 rounded-full bg-white/30 hover:bg-white transition-all" title="Liceo Minero América"></button>
       </div>
     </div>
 
@@ -1015,7 +1015,7 @@
   </footer>
 
   <!-- ========================================================
-       JAVASCRIPT DINÁMICO & CONTROLES DEL CARRUSEL (DRAG AND DROP)
+       JAVASCRIPT DINÁMICO & CONTROLES DEL CARRUSEL INFINITO
   ======================================================== -->
   <script>
     const fullData = {"dimensions_learning": [{"dimension": "Metodologías ágiles", "pre": 2.0, "post": 4.74}, {"dimension": "Comunicación estratégica", "pre": 2.82, "post": 4.52}, {"dimension": "Economía circular y sostenibilidad", "pre": 3.0, "post": 4.48}, {"dimension": "Prototipado y validación", "pre": 2.82, "post": 4.09}, {"dimension": "Herramientas digitales e IA", "pre": 3.68, "post": 4.39}], "schools_evolution": [{"school": "Colegio Chuquicamata", "tag": "Pitch destacado", "pre_dims": [2.8, 3.4, 3.4, 3.8, 4.0], "post_dims": [4.6, 4.6, 4.2, 4.4, 4.6]}, {"school": "Colegio Ecológico Montessori", "tag": "Pitch destacado", "pre_dims": [1.2, 2.4, 2.4, 3.4, 1.8], "post_dims": [4.8, 4.8, 4.2, 4.6, 4.8]}, {"school": "Liceo Francisco de Aguirre (B-8)", "tag": "Comunidad participante", "pre_dims": [2.0, 3.0, 2.7, 3.7, 2.7], "post_dims": [4.7, 4.3, 4.0, 4.3, 4.7]}, {"school": "Liceo Bicentenario Cesáreo Aguirre (B-9)", "tag": "Comunidad participante", "pre_dims": [2.0, 3.2, 2.8, 3.6, 2.8], "post_dims": [4.8, 4.4, 4.0, 4.2, 4.6]}, {"school": "Liceo Minero América (B-10)", "tag": "Comunidad participante", "pre_dims": [1.8, 3.0, 2.6, 3.8, 2.4], "post_dims": [4.8, 4.4, 4.0, 4.4, 4.0]}]};
@@ -1041,6 +1041,11 @@
     // Radar Chart & Bar Chart instances
     let radarChart = null;
     let barChart = null;
+
+    // Constantes del Carrusel Infinito
+    const N_PROJECTS = 5;
+    let isNormalizing = false;
+    let scrollTimer = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
@@ -1143,12 +1148,55 @@
         }
       });
 
-      // Escuchar scroll del carrusel para sincronizar indicadores
+      // ========================================================
+      // INICIALIZACIÓN DEL CARRUSEL INFINITO BIDIRECCIONAL
+      // ========================================================
       const track = document.getElementById('projectsTrack');
-      track.addEventListener('scroll', updateProjectDots);
+      const originalCards = Array.from(track.querySelectorAll('.project-card'));
+
+      // Clonar 2 juegos completos antes y 2 juegos completos después
+      // Resultado: [Set 0] [Set 1] [Original Set 2] [Set 3] [Set 4] (Total 25 fichas)
+      for (let s = 0; s < 2; s++) {
+        originalCards.slice().reverse().forEach(card => {
+          const clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          track.insertBefore(clone, track.firstElementChild);
+        });
+      }
+      for (let s = 0; s < 2; s++) {
+        originalCards.forEach(card => {
+          const clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          track.appendChild(clone);
+        });
+      }
+
+      // Posicionamiento inicial centrado en el juego original (Set 2)
+      function initInfiniteCarousel() {
+        const step = getCardStep();
+        const setWidth = N_PROJECTS * step;
+        track.style.scrollBehavior = 'auto';
+        track.style.scrollSnapType = 'none';
+        track.scrollLeft = 2 * setWidth;
+        requestAnimationFrame(() => {
+          track.style.scrollSnapType = 'x mandatory';
+          track.style.scrollBehavior = 'smooth';
+          updateProjectDots();
+        });
+      }
+
+      setTimeout(initInfiniteCarousel, 60);
+      window.addEventListener('resize', initInfiniteCarousel);
+
+      // Listener de scroll para sincronizar indicadores y normalizar en bucle infinito
+      track.addEventListener('scroll', () => {
+        updateProjectDots();
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(normalizeInfiniteScroll, 120);
+      });
 
       // ========================================================
-      // ARRASTRE CON EL MOUSE (CLICK AND DRAG HORIZONTAL)
+      // ARRASTRE FLUIDO CON EL MOUSE (CLICK AND DRAG INFINITO)
       // ========================================================
       let isDown = false;
       let startX = 0;
@@ -1167,6 +1215,7 @@
         if (isDown) {
           isDown = false;
           track.classList.remove('is-dragging');
+          normalizeInfiniteScroll();
         }
       });
 
@@ -1174,6 +1223,7 @@
         if (isDown) {
           isDown = false;
           track.classList.remove('is-dragging');
+          normalizeInfiniteScroll();
         }
       });
 
@@ -1181,14 +1231,28 @@
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - track.offsetLeft;
-        const walk = (x - startX) * 1.5; // Factor de desplazamiento suave
+        const walk = (x - startX) * 1.5;
         if (Math.abs(walk) > 4) {
           hasDragged = true;
         }
-        track.scrollLeft = scrollStart - walk;
+        
+        let newPos = scrollStart - walk;
+        const step = getCardStep();
+        const setWidth = N_PROJECTS * step;
+
+        // Mantener dentro de un rango seguro continuo mientras se arrastra
+        if (newPos < setWidth) {
+          newPos += setWidth;
+          scrollStart += setWidth;
+        } else if (newPos > 3 * setWidth) {
+          newPos -= setWidth;
+          scrollStart -= setWidth;
+        }
+
+        track.scrollLeft = newPos;
       });
 
-      // Prevenir acciones accidentales de click al soltar después de arrastrar
+      // Prevenir clicks accidentales al soltar el arrastre
       track.addEventListener('click', (e) => {
         if (hasDragged) {
           e.preventDefault();
@@ -1196,6 +1260,78 @@
         }
       });
     });
+
+    // Ayudante: Ancho de tarjeta + margen (gap-6 = 24px)
+    function getCardStep() {
+      const track = document.getElementById('projectsTrack');
+      const first = track ? track.querySelector('.project-card') : null;
+      return first ? first.offsetWidth + 24 : 450;
+    }
+
+    // Normalización matemática invisible del bucle infinito
+    function normalizeInfiniteScroll() {
+      if (isNormalizing) return;
+      const track = document.getElementById('projectsTrack');
+      if (!track) return;
+      
+      const step = getCardStep();
+      const setWidth = N_PROJECTS * step;
+      const center = 2 * setWidth;
+      const diff = track.scrollLeft - center;
+
+      // Si nos alejamos más de 1 bloque completo del centro, reajustamos en silencio
+      if (Math.abs(diff) >= setWidth) {
+        isNormalizing = true;
+        track.style.scrollBehavior = 'auto';
+        track.style.scrollSnapType = 'none';
+
+        const setsToShift = Math.trunc(diff / setWidth);
+        track.scrollLeft -= setsToShift * setWidth;
+
+        requestAnimationFrame(() => {
+          track.style.scrollSnapType = 'x mandatory';
+          track.style.scrollBehavior = 'smooth';
+          isNormalizing = false;
+        });
+      }
+    }
+
+    // Control con los botones laterales < y > (avanzan infinitamente)
+    function scrollProjects(direction) {
+      const track = document.getElementById('projectsTrack');
+      const step = getCardStep();
+      track.scrollBy({ left: direction * step, behavior: 'smooth' });
+    }
+
+    // Navegación directa por indicador (dot)
+    function goToProject(index) {
+      const track = document.getElementById('projectsTrack');
+      const step = getCardStep();
+      const setWidth = N_PROJECTS * step;
+      const target = (2 * setWidth) + (index * step);
+      track.scrollTo({ left: target, behavior: 'smooth' });
+    }
+
+    // Sincronización de los 5 dots en bucle modular
+    function updateProjectDots() {
+      const track = document.getElementById('projectsTrack');
+      if (!track) return;
+      const step = getCardStep();
+      const cardIdx = Math.round(track.scrollLeft / step);
+      const activeIdx = ((cardIdx % N_PROJECTS) + N_PROJECTS) % N_PROJECTS;
+
+      for (let i = 0; i < N_PROJECTS; i++) {
+        const dot = document.getElementById('dot-' + i);
+        if (!dot) continue;
+        if (i === activeIdx) {
+          dot.classList.remove('w-2.5', 'bg-white/30');
+          dot.classList.add('w-7', 'bg-brand-brightLime');
+        } else {
+          dot.classList.remove('w-7', 'bg-brand-brightLime');
+          dot.classList.add('w-2.5', 'bg-white/30');
+        }
+      }
+    }
 
     // Función para actualizar gráficos según el colegio seleccionado
     function updateEvolutionChart() {
@@ -1244,40 +1380,6 @@
           card.style.display = 'none';
         }
       });
-    }
-
-    // Control del Carrusel Horizontal de Proyectos con Botones
-    function scrollProjects(direction) {
-      const track = document.getElementById('projectsTrack');
-      const cardWidth = track.firstElementChild ? track.firstElementChild.offsetWidth + 24 : 450;
-      track.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
-    }
-
-    function goToProject(index) {
-      const track = document.getElementById('projectsTrack');
-      const cards = track.children;
-      if (cards[index]) {
-        cards[index].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-    }
-
-    function updateProjectDots() {
-      const track = document.getElementById('projectsTrack');
-      const scrollPos = track.scrollLeft;
-      const cardWidth = track.firstElementChild ? track.firstElementChild.offsetWidth + 24 : 450;
-      const activeIdx = Math.round(scrollPos / cardWidth);
-
-      for (let i = 0; i < 5; i++) {
-        const dot = document.getElementById('dot-' + i);
-        if (!dot) continue;
-        if (i === activeIdx) {
-          dot.classList.remove('w-2.5', 'bg-white/30');
-          dot.classList.add('w-7', 'bg-brand-brightLime');
-        } else {
-          dot.classList.remove('w-7', 'bg-brand-brightLime');
-          dot.classList.add('w-2.5', 'bg-white/30');
-        }
-      }
     }
   </script>
 </body>
