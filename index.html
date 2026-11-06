@@ -82,6 +82,23 @@
       box-shadow: 0 15px 35px -5px rgba(34, 197, 94, 0.25);
     }
 
+    /* Estilos del carrusel con arrastre de mouse (Click and Drag) */
+    .drag-scroll-track {
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .drag-scroll-track.is-dragging {
+      cursor: grabbing !important;
+      scroll-snap-type: none !important;
+      scroll-behavior: auto !important;
+    }
+    .drag-scroll-track img {
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
     .scrollbar-none::-webkit-scrollbar {
       display: none;
     }
@@ -624,7 +641,7 @@
   </section>
 
   <!-- ========================================================
-       5. SECCIÓN 4: CARRUSEL HORIZONTAL DE SOLUCIONES SOSTENIBLES
+       5. SECCIÓN 4: CARRUSEL HORIZONTAL CON ARRASTRE DE MOUSE (CLICK AND DRAG)
   ======================================================== -->
   <section id="proyectos" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t-2 border-white/10 reveal">
     
@@ -636,10 +653,10 @@
 
       <!-- Controles de navegación del carrusel -->
       <div class="flex items-center gap-2">
-        <button onclick="scrollProjects(-1)" class="w-9 h-9 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-brand-neonGreen hover:text-black hover:border-brand-neonGreen transition flex items-center justify-center shadow-sm">
+        <button onclick="scrollProjects(-1)" class="w-9 h-9 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-brand-neonGreen hover:text-black hover:border-brand-neonGreen transition flex items-center justify-center shadow-sm" title="Anterior">
           <i data-lucide="chevron-left" class="w-5 h-5"></i>
         </button>
-        <button onclick="scrollProjects(1)" class="w-9 h-9 rounded-xl bg-brand-neonGreen border border-brand-neonGreen text-black hover:bg-brand-brightLime transition flex items-center justify-center shadow-sticker-pink">
+        <button onclick="scrollProjects(1)" class="w-9 h-9 rounded-xl bg-brand-neonGreen border border-brand-neonGreen text-black hover:bg-brand-brightLime transition flex items-center justify-center shadow-sticker-pink" title="Siguiente">
           <i data-lucide="chevron-right" class="w-5 h-5"></i>
         </button>
       </div>
@@ -655,14 +672,15 @@
         </p>
       </div>
 
-      <span class="text-xs font-bold text-slate-300 hidden md:inline-block shrink-0 bg-white/10 px-3 py-1.5 rounded-xl border border-white/15">
-        Desliza horizontalmente &rarr;
+      <span class="text-xs font-bold text-slate-300 hidden md:inline-flex items-center gap-1.5 shrink-0 bg-white/10 px-3.5 py-1.5 rounded-xl border border-white/15 shadow-sm">
+        <i data-lucide="mouse-pointer" class="w-3.5 h-3.5 text-brand-neonGreen animate-pulse"></i>
+        <span>Arrastra con el mouse &rarr;</span>
       </span>
     </div>
 
-    <!-- CONTENEDOR DEL CARRUSEL HORIZONTAL -->
+    <!-- CONTENEDOR DEL CARRUSEL HORIZONTAL CON DRAG-TO-SCROLL -->
     <div class="relative">
-      <div id="projectsTrack" class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 pt-2 px-1 scrollbar-none scroll-smooth">
+      <div id="projectsTrack" class="drag-scroll-track flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 pt-2 px-1 scrollbar-none scroll-smooth">
         
         <!-- FICHA 1: COLEGIO CHUQUICAMATA (PITCH DESTACADO) -->
         <div class="w-[310px] sm:w-[420px] md:w-[480px] shrink-0 snap-center bg-gradient-to-b from-[#501D78] to-[#3E1361] border-2 border-brand-neonGreen rounded-3xl p-5 sm:p-6 shadow-sticker-green card-comic flex flex-col justify-between">
@@ -997,7 +1015,7 @@
   </footer>
 
   <!-- ========================================================
-       JAVASCRIPT DINÁMICO & CONTROLES DEL CARRUSEL
+       JAVASCRIPT DINÁMICO & CONTROLES DEL CARRUSEL (DRAG AND DROP)
   ======================================================== -->
   <script>
     const fullData = {"dimensions_learning": [{"dimension": "Metodologías ágiles", "pre": 2.0, "post": 4.74}, {"dimension": "Comunicación estratégica", "pre": 2.82, "post": 4.52}, {"dimension": "Economía circular y sostenibilidad", "pre": 3.0, "post": 4.48}, {"dimension": "Prototipado y validación", "pre": 2.82, "post": 4.09}, {"dimension": "Herramientas digitales e IA", "pre": 3.68, "post": 4.39}], "schools_evolution": [{"school": "Colegio Chuquicamata", "tag": "Pitch destacado", "pre_dims": [2.8, 3.4, 3.4, 3.8, 4.0], "post_dims": [4.6, 4.6, 4.2, 4.4, 4.6]}, {"school": "Colegio Ecológico Montessori", "tag": "Pitch destacado", "pre_dims": [1.2, 2.4, 2.4, 3.4, 1.8], "post_dims": [4.8, 4.8, 4.2, 4.6, 4.8]}, {"school": "Liceo Francisco de Aguirre (B-8)", "tag": "Comunidad participante", "pre_dims": [2.0, 3.0, 2.7, 3.7, 2.7], "post_dims": [4.7, 4.3, 4.0, 4.3, 4.7]}, {"school": "Liceo Bicentenario Cesáreo Aguirre (B-9)", "tag": "Comunidad participante", "pre_dims": [2.0, 3.2, 2.8, 3.6, 2.8], "post_dims": [4.8, 4.4, 4.0, 4.2, 4.6]}, {"school": "Liceo Minero América (B-10)", "tag": "Comunidad participante", "pre_dims": [1.8, 3.0, 2.6, 3.8, 2.4], "post_dims": [4.8, 4.4, 4.0, 4.4, 4.0]}]};
@@ -1128,6 +1146,55 @@
       // Escuchar scroll del carrusel para sincronizar indicadores
       const track = document.getElementById('projectsTrack');
       track.addEventListener('scroll', updateProjectDots);
+
+      // ========================================================
+      // ARRASTRE CON EL MOUSE (CLICK AND DRAG HORIZONTAL)
+      // ========================================================
+      let isDown = false;
+      let startX = 0;
+      let scrollStart = 0;
+      let hasDragged = false;
+
+      track.addEventListener('mousedown', (e) => {
+        isDown = true;
+        hasDragged = false;
+        startX = e.pageX - track.offsetLeft;
+        scrollStart = track.scrollLeft;
+        track.classList.add('is-dragging');
+      });
+
+      track.addEventListener('mouseleave', () => {
+        if (isDown) {
+          isDown = false;
+          track.classList.remove('is-dragging');
+        }
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDown) {
+          isDown = false;
+          track.classList.remove('is-dragging');
+        }
+      });
+
+      track.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 1.5; // Factor de desplazamiento suave
+        if (Math.abs(walk) > 4) {
+          hasDragged = true;
+        }
+        track.scrollLeft = scrollStart - walk;
+      });
+
+      // Prevenir acciones accidentales de click al soltar después de arrastrar
+      track.addEventListener('click', (e) => {
+        if (hasDragged) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
     });
 
     // Función para actualizar gráficos según el colegio seleccionado
@@ -1179,7 +1246,7 @@
       });
     }
 
-    // Control del Carrusel Horizontal de Proyectos
+    // Control del Carrusel Horizontal de Proyectos con Botones
     function scrollProjects(direction) {
       const track = document.getElementById('projectsTrack');
       const cardWidth = track.firstElementChild ? track.firstElementChild.offsetWidth + 24 : 450;
