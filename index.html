@@ -191,6 +191,10 @@
         <a href="#voces" class="px-3 py-1.5 rounded-xl hover:text-white hover:bg-white/10 transition">Voces</a>
         <a href="#proyectos" class="px-3 py-1.5 rounded-xl hover:text-white hover:bg-white/10 transition">Soluciones</a>
         <a href="#comunidad" class="px-3 py-1.5 rounded-xl hover:text-white hover:bg-white/10 transition">Comunidad</a>
+        <button onclick="handleSroiNavClick(event)" id="nav-sroi-btn" class="px-3 py-1.5 rounded-xl text-brand-yellow hover:text-white hover:bg-white/10 transition flex items-center gap-1.5 font-bold border border-brand-yellow/30 bg-brand-yellow/10">
+          <i data-lucide="lock" id="nav-sroi-icon" class="w-3.5 h-3.5 text-brand-yellow"></i>
+          <span id="nav-sroi-text">Retorno social</span>
+        </button>
       </div>
 
       <!-- Botón de acción rápida -->
@@ -201,6 +205,37 @@
         </a>
       </div>
     </nav>
+  
+  <!-- MODAL DE ACCESO PROTEGIDO A RETORNO SOCIAL (SROI) -->
+  <div id="sroi-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300 no-print">
+    <div class="bg-[#501D78] border-2 border-brand-yellow rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative text-center transform scale-95 transition-all duration-300" id="sroi-modal-card">
+      <button onclick="closeSroiModal()" class="absolute top-4 right-4 text-white/60 hover:text-white transition">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <div class="w-16 h-16 rounded-3xl bg-brand-yellow/20 border-2 border-brand-yellow flex items-center justify-center mx-auto mb-4 text-brand-yellow shadow-sticker-pink">
+        <i data-lucide="lock" class="w-8 h-8"></i>
+      </div>
+      <span class="text-[11px] font-black tracking-widest text-brand-yellow uppercase block mb-1">Módulo para tomadores de decisión</span>
+      <h3 class="text-2xl font-black text-white font-display mb-2">Retorno social (SROI)</h3>
+      <p class="text-xs text-slate-200 leading-relaxed mb-6">
+        Sección ejecutiva con análisis financiero, valoración de horas de mentoría, retención de capital humano a 5 años y costo-eficiencia para directivos de Corfo, Verdical y FCAB.
+      </p>
+      <div class="space-y-3">
+        <div class="relative">
+          <input type="password" id="modal-sroi-pass" placeholder="Ingresa la contraseña..." class="w-full bg-[#2D0A4E] border-2 border-white/20 rounded-2xl px-4 py-3 text-white text-center text-sm font-bold tracking-widest placeholder:text-white/40 placeholder:tracking-normal focus:outline-none focus:border-brand-brightLime transition" onkeydown="if(event.key==='Enter') verifyModalSroi()">
+        </div>
+        <p id="modal-sroi-error" class="text-xs text-red-400 font-bold hidden flex items-center justify-center gap-1">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+          <span>Contraseña incorrecta. Intenta nuevamente.</span>
+        </p>
+        <button onclick="verifyModalSroi()" class="w-full bg-brand-brightLime text-black font-black py-3 rounded-2xl hover:bg-brand-neonGreen transition shadow-sticker-pink flex items-center justify-center gap-2 text-sm">
+          <span>Desbloquear análisis</span>
+          <i data-lucide="key" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
   </header>
 
   <!-- ========================================================
@@ -1185,6 +1220,357 @@
        6. CIERRE INSTITUCIONAL Y LOGOS EN EL FOOTER
        Logos oficiales: Verdical, Comité Corfo Antofagasta y FCAB
   ======================================================== -->
+  
+  <!-- ========================================================
+       SECCIÓN PROTEGIDA: RETORNO SOCIAL (SROI & TOMADORES DE DECISIÓN)
+  ======================================================== -->
+  <section id="retorno-social" class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t-2 border-white/10 reveal">
+
+    <!-- ESTADO BLOQUEADO (CARD IN-PAGE) -->
+    <div id="sroi-locked-card" class="bg-[#501D78] border-2 border-brand-yellow/80 rounded-3xl p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-sticker-pink relative overflow-hidden">
+      <div class="w-20 h-20 rounded-3xl bg-brand-yellow/20 border-2 border-brand-yellow flex items-center justify-center mx-auto mb-5 text-brand-yellow shadow-lg">
+        <i data-lucide="lock" class="w-10 h-10"></i>
+      </div>
+      <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-black/40 border border-brand-yellow/50 text-brand-yellow text-xs font-black tracking-wider mb-3">
+        <span>Acceso exclusivo para inversionistas y directivos</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-black text-white font-display mb-3">Retorno social de la inversión (SROI)</h2>
+      <p class="text-slate-200 text-sm max-w-lg mx-auto leading-relaxed mb-8">
+        Este módulo consolida la evaluación económica formal del programa: flujos de beneficio a 5 años, valorización de horas técnicas de mentoría, competencias comunicacionales instaladas y costo-eficiencia de fondos públicos (Corfo Viraliza 25VIRTL-307467).
+      </p>
+
+      <div class="max-w-sm mx-auto space-y-3">
+        <div class="relative">
+          <input type="password" id="page-sroi-pass" placeholder="Ingresa la contraseña para desbloquear..." class="w-full bg-[#2D0A4E] border-2 border-white/20 rounded-2xl px-5 py-3.5 text-white text-center text-sm font-bold tracking-widest placeholder:text-white/40 placeholder:tracking-normal focus:outline-none focus:border-brand-brightLime transition shadow-inner" onkeydown="if(event.key==='Enter') verifyPageSroi()">
+        </div>
+        <p id="page-sroi-error" class="text-xs text-red-400 font-bold hidden flex items-center justify-center gap-1">
+          <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+          <span>Contraseña incorrecta. Intenta nuevamente.</span>
+        </p>
+        <button onclick="verifyPageSroi()" class="w-full bg-brand-brightLime text-black font-black py-3.5 rounded-2xl hover:bg-brand-neonGreen transition shadow-sticker-pink flex items-center justify-center gap-2 text-sm">
+          <span>Desbloquear reporte ejecutivo</span>
+          <i data-lucide="unlock" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ESTADO DESBLOQUEADO (DASHBOARD EJECUTIVO DE RETORNO SOCIAL) -->
+    <div id="sroi-unlocked-content" style="display: none;" class="space-y-12">
+
+      <!-- Encabezado de la pestaña -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b-2 border-white/10 pb-6">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-yellow/20 border border-brand-yellow/60 text-brand-yellow text-xs font-black tracking-wider mb-2">
+            <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            <span>Módulo confidencial desbloqueado</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-black text-white font-display">Retorno social de la inversión (SROI)</h2>
+          <p class="text-slate-200 text-sm mt-1 max-w-3xl">
+            Evaluación económica-social y eficiencia de fondos públicos del programa <strong>Speakers en Verde Calama 2026</strong> (Código Corfo 25VIRTL-307467).
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 self-start md:self-auto">
+          <div class="hidden sm:flex flex-wrap gap-1.5 text-[11px] font-bold text-white/80">
+            <span class="px-2.5 py-1 bg-white/10 rounded-lg">Horizonte: 5 años</span>
+            <span class="px-2.5 py-1 bg-white/10 rounded-lg">Tasa social: 6,0%</span>
+            <span class="px-2.5 py-1 bg-white/10 rounded-lg">GEM Chile</span>
+          </div>
+          <button onclick="lockSroi()" class="text-xs text-white/70 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            <span>Bloquear vista</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. Tarjeta Resumen de Inversión y Metas del Proyecto -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-[#501D78] border-2 border-white/20 rounded-3xl p-5 shadow-sticker-pink">
+          <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+            <span>Subsidio Corfo Viraliza</span>
+            <span class="text-brand-brightLime font-black">70,1%</span>
+          </div>
+          <span class="text-3xl sm:text-4xl font-black text-white font-display block">$30.000.000</span>
+          <p class="text-[11px] text-slate-200 mt-2 font-medium">
+            Aporte del Comité de Desarrollo Productivo Regional de Antofagasta (Viraliza Formación).
+          </p>
+        </div>
+
+        <div class="bg-[#501D78] border-2 border-white/20 rounded-3xl p-5 shadow-sticker-green">
+          <div class="flex items-center justify-between text-xs text-slate-300 font-bold mb-1">
+            <span>Aporte entidad ejecutora (Verdical)</span>
+            <span class="text-brand-yellow font-black">29,9%</span>
+          </div>
+          <span class="text-3xl sm:text-4xl font-black text-white font-display block">$12.800.000</span>
+          <p class="text-[11px] text-slate-200 mt-2 font-medium">
+            Aporte pecuario y valorizado de Verdical SpA en gestión, profesionales y despliegue territorial.
+          </p>
+        </div>
+
+        <div class="bg-gradient-to-br from-[#501D78] to-[#2D0A4E] border-2 border-brand-brightLime rounded-3xl p-5 shadow-sticker-pink">
+          <div class="flex items-center justify-between text-xs text-brand-brightLime font-bold mb-1">
+            <span>Inversión total del proyecto</span>
+            <span class="text-white font-black">100%</span>
+          </div>
+          <span class="text-3xl sm:text-4xl font-black text-brand-brightLime font-display block">$42.800.000</span>
+          <p class="text-[11px] text-slate-200 mt-2 font-medium">
+            Presupuesto integral ejecutado para las 5 comunidades escolares de la Provincia de El Loa.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. Tarjetas Grandes de Ratios SROI (Key Decision Drivers) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- SROI Subsidio Corfo -->
+        <div class="bg-[#501D78] border-2 border-brand-brightLime rounded-3xl p-6 shadow-sticker-pink relative overflow-hidden">
+          <div class="w-12 h-12 rounded-2xl bg-brand-brightLime/20 border-2 border-brand-brightLime flex items-center justify-center text-brand-brightLime mb-4">
+            <i data-lucide="trending-up" class="w-6 h-6"></i>
+          </div>
+          <span class="text-xs font-black tracking-wider text-brand-brightLime uppercase block">Retorno subsidio Corfo</span>
+          <div class="flex items-baseline gap-2 mt-1 mb-2">
+            <span class="text-5xl font-black text-white font-display">3.72x</span>
+            <span class="text-xs text-brand-brightLime font-bold">a 5 años</span>
+          </div>
+          <p class="text-xs text-slate-200 leading-relaxed">
+            Por cada <strong>$1 público adjudicado</strong> por el Comité Corfo Antofagasta, el proyecto retorna <strong>$3,72 de valor social comprobado</strong> al territorio.
+          </p>
+        </div>
+
+        <!-- SROI Inversión Total -->
+        <div class="bg-[#501D78] border-2 border-brand-yellow rounded-3xl p-6 shadow-sticker-green relative overflow-hidden">
+          <div class="w-12 h-12 rounded-2xl bg-brand-yellow/20 border-2 border-brand-yellow flex items-center justify-center text-brand-yellow mb-4">
+            <i data-lucide="pie-chart" class="w-6 h-6"></i>
+          </div>
+          <span class="text-xs font-black tracking-wider text-brand-yellow uppercase block">Retorno inversión total</span>
+          <div class="flex items-baseline gap-2 mt-1 mb-2">
+            <span class="text-5xl font-black text-white font-display">2.60x</span>
+            <span class="text-xs text-brand-yellow font-bold">a 5 años</span>
+          </div>
+          <p class="text-xs text-slate-200 leading-relaxed">
+            Por cada <strong>$1 invertido en la iniciativa global</strong> ($42.8M entre Corfo y Verdical), se generan <strong>$2,60 en beneficio social acumulado</strong>.
+          </p>
+        </div>
+
+        <!-- Valor Social Neto -->
+        <div class="bg-[#501D78] border-2 border-white rounded-3xl p-6 shadow-sticker-pink relative overflow-hidden">
+          <div class="w-12 h-12 rounded-2xl bg-brand-rose/20 border-2 border-brand-rose flex items-center justify-center text-brand-rose mb-4">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <span class="text-xs font-black tracking-wider text-brand-rose uppercase block">Valor social neto (VPN)</span>
+          <div class="flex items-baseline gap-2 mt-1 mb-2">
+            <span class="text-4xl sm:text-5xl font-black text-white font-display">$111.4M</span>
+            <span class="text-xs text-slate-300 font-bold">CLP</span>
+          </div>
+          <p class="text-xs text-slate-200 leading-relaxed">
+            Valor social presente acumulado a 5 años, deducido de peso muerto (10% GEM) y ajustado por 85% de atribución directa.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. Los 4 Pilares del Impacto y la Aceleración de Capacidades -->
+      <div class="bg-[#501D78] border-2 border-white rounded-3xl p-6 sm:p-8 shadow-sticker-green">
+        <div class="max-w-2xl mb-6">
+          <span class="text-xs font-black tracking-wider text-brand-brightLime uppercase block mb-1">Estructura de valor social</span>
+          <h3 class="text-2xl font-black text-white font-display">Los 4 pilares de impacto evaluados</h3>
+          <p class="text-xs text-slate-200 mt-1">
+            El modelo refleja con exactitud las horas técnicas y profesionales de acompañamiento a los equipos y el activo más duradero: las habilidades comunicacionales instaladas.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Pilar 1 -->
+          <div class="bg-[#2D0A4E]/90 border border-white/20 rounded-2xl p-5 hover:border-brand-brightLime/60 transition">
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <div class="w-9 h-9 rounded-xl bg-brand-brightLime/20 text-brand-brightLime flex items-center justify-center font-black text-sm">1</div>
+              <span class="text-xs font-black text-brand-brightLime bg-brand-brightLime/10 px-2.5 py-1 rounded-lg">$18.544.271 CLP (Año 1)</span>
+            </div>
+            <h4 class="text-base font-black text-white font-display mb-1">Mentorías técnicas y maduración de proyectos</h4>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              <strong>25 intervenciones presenciales de mentoría experta en terreno</strong> (5 sesiones por colegio adaptadas a su nivel de avance). Horas profesionales dispuestas para estructurar el modelo de negocio, prototipar y validar técnicamente las 5 soluciones circulares.
+            </p>
+            <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-300 font-medium">
+              <span>Ganancia en metodologías ágiles:</span>
+              <strong class="text-brand-brightLime font-bold">+137,0% ex-ante vs ex-post</strong>
+            </div>
+          </div>
+
+          <!-- Pilar 2 -->
+          <div class="bg-[#2D0A4E]/90 border border-white/20 rounded-2xl p-5 hover:border-brand-yellow/60 transition">
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <div class="w-9 h-9 rounded-xl bg-brand-yellow/20 text-brand-yellow flex items-center justify-center font-black text-sm">2</div>
+              <span class="text-xs font-black text-brand-yellow bg-brand-yellow/10 px-2.5 py-1 rounded-lg">$17.550.439 CLP (Año 1)</span>
+            </div>
+            <h4 class="text-base font-black text-white font-display mb-1">Capacidades comunicacionales y oratoria (Life Skills)</h4>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              El núcleo del programa: transformar a los 25 estudiantes en <strong>Speakers</strong>. Expresión escénica, dominio del miedo al hablar, estructuración de pitch y storytelling. Habilidad transversal permanente que los acompañará en cualquier proyecto futuro, estudios superiores y mundo laboral.
+            </p>
+            <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-300 font-medium">
+              <span>Ganancia en oratoria y pitch:</span>
+              <strong class="text-brand-yellow font-bold">+60,0% ex-ante vs ex-post</strong>
+            </div>
+          </div>
+
+          <!-- Pilar 3 -->
+          <div class="bg-[#2D0A4E]/90 border border-white/20 rounded-2xl p-5 hover:border-brand-rose/60 transition">
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <div class="w-9 h-9 rounded-xl bg-brand-rose/20 text-brand-rose flex items-center justify-center font-black text-sm">3</div>
+              <span class="text-xs font-black text-brand-rose bg-brand-rose/10 px-2.5 py-1 rounded-lg">$1.476.960 CLP (Año 1)</span>
+            </div>
+            <h4 class="text-base font-black text-white font-display mb-1">Acompañamiento docente en terreno (Rol realista)</h4>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              Valorización sobria de las <strong>16 horas de dedicación presencial por docente guía</strong> en las 8 intervenciones del programa (80 horas docentes totales). Representa su rol activo de facilitación escolar, articulación interna y apoyo motivacional continuo sin sobreestimaciones académicas.
+            </p>
+            <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-300 font-medium">
+              <span>Docentes líderes activos:</span>
+              <strong class="text-white font-bold">5 de 5 establecimientos (100%)</strong>
+            </div>
+          </div>
+
+          <!-- Pilar 4 -->
+          <div class="bg-[#2D0A4E]/90 border border-white/20 rounded-2xl p-5 hover:border-brand-neonGreen/60 transition">
+            <div class="flex items-start justify-between gap-3 mb-2">
+              <div class="w-9 h-9 rounded-xl bg-brand-neonGreen/20 text-brand-neonGreen flex items-center justify-center font-black text-sm">4</div>
+              <span class="text-xs font-black text-brand-neonGreen bg-brand-neonGreen/10 px-2.5 py-1 rounded-lg">$11.561.828 CLP (Año 1)</span>
+            </div>
+            <h4 class="text-base font-black text-white font-display mb-1">Comunidades educativas beneficiarias (5.010 alumnos)</h4>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              Los 5 colegios completos son los beneficiarios territoriales de las soluciones de economía circular (en etapa de ideas y prototipos iniciales) y receptores de la cultura de sustentabilidad escolar transmitida por sus delegaciones.
+            </p>
+            <div class="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-300 font-medium">
+              <span>Matrícula oficial 5 colegios:</span>
+              <strong class="text-brand-neonGreen font-bold">5.010 estudiantes (Mineduc)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Tabla de Proyección a 5 Años y Tasa de Descuento Social -->
+      <div class="bg-[#501D78] border-2 border-white rounded-3xl p-6 sm:p-8 shadow-sticker-pink overflow-x-auto">
+        <div class="max-w-2xl mb-5">
+          <span class="text-xs font-black tracking-wider text-brand-brightLime uppercase block mb-1">Flujo temporal</span>
+          <h3 class="text-2xl font-black text-white font-display">Proyección a 5 años (Valor Presente Social)</h3>
+          <p class="text-xs text-slate-200 mt-1">
+            Cálculo conforme a la <strong>Tasa Social de Descuento del 6,0% anual</strong> fijada por el Ministerio de Desarrollo Social y Familia (MDSF) y tasas de deterioro técnico diferenciadas.
+          </p>
+        </div>
+
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b-2 border-white/20 text-slate-300 font-black tracking-wider uppercase text-[10px]">
+              <th class="py-3 px-3">Periodo</th>
+              <th class="py-3 px-3">Flujo Social Bruto</th>
+              <th class="py-3 px-3">Factor Descuento (6%)</th>
+              <th class="py-3 px-3 text-brand-brightLime">Valor Presente (VPS)</th>
+              <th class="py-3 px-3">Dinámica y Maduración del Impacto</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10 font-medium text-slate-200">
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-3 px-3 font-bold text-white">Año 1 (2026)</td>
+              <td class="py-3 px-3">$49.133.498 CLP</td>
+              <td class="py-3 px-3">1,000</td>
+              <td class="py-3 px-3 font-black text-brand-brightLime">$49.133.498 CLP</td>
+              <td class="py-3 px-3 text-[11px]">Ejecución del programa, 25 mentorías, bootcamps y Gran Final Pitch Day.</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-3 px-3 font-bold text-white">Año 2</td>
+              <td class="py-3 px-3">$38.100.924 CLP</td>
+              <td class="py-3 px-3">0,943</td>
+              <td class="py-3 px-3 font-black text-brand-brightLime">$35.944.268 CLP</td>
+              <td class="py-3 px-3 text-[11px]">Alumnos aplican oratoria en ferias escolares y defensas de proyectos de aula.</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-3 px-3 font-bold text-white">Año 3</td>
+              <td class="py-3 px-3">$29.721.894 CLP</td>
+              <td class="py-3 px-3">0,890</td>
+              <td class="py-3 px-3 font-black text-brand-brightLime">$26.452.380 CLP</td>
+              <td class="py-3 px-3 text-[11px]">Transición de enseñanza media a educación superior / formación técnico-profesional.</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-3 px-3 font-bold text-white">Año 4</td>
+              <td class="py-3 px-3">$23.323.438 CLP</td>
+              <td class="py-3 px-3">0,840</td>
+              <td class="py-3 px-3 font-black text-brand-brightLime">$19.582.808 CLP</td>
+              <td class="py-3 px-3 text-[11px]">Habilidad de oratoria y síntesis consolidada en inserción laboral temprana.</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition">
+              <td class="py-3 px-3 font-bold text-white">Año 5</td>
+              <td class="py-3 px-3">$18.409.920 CLP</td>
+              <td class="py-3 px-3">0,792</td>
+              <td class="py-3 px-3 font-black text-brand-brightLime">$14.582.381 CLP</td>
+              <td class="py-3 px-3 text-[11px]">Capital humano maduro: capacidad de formular y defender nuevos emprendimientos.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2 border-white/30 font-black text-white text-xs bg-white/5">
+              <td class="py-3.5 px-3 uppercase">Total 5 Años</td>
+              <td class="py-3.5 px-3">$158.689.674 CLP</td>
+              <td class="py-3.5 px-3">—</td>
+              <td class="py-3.5 px-3 text-brand-brightLime text-sm">$145.695.334 CLP</td>
+              <td class="py-3.5 px-3 text-[11px] text-slate-300">Valor Social Bruto acumulado a Valor Presente Social</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Deducciones Metodológicas -->
+        <div class="mt-6 pt-5 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div class="bg-[#2D0A4E] p-3.5 rounded-2xl border border-white/10">
+            <span class="text-slate-300 font-bold block mb-0.5">Peso muerto (Deadweight): 10%</span>
+            <p class="text-[11px] text-slate-200">
+              Basado en informe <strong>GEM Chile</strong>: el currículum formal no enseña oratoria ni metodologías ágiles.
+            </p>
+          </div>
+          <div class="bg-[#2D0A4E] p-3.5 rounded-2xl border border-white/10">
+            <span class="text-slate-300 font-bold block mb-0.5">Atribución directa: 85%</span>
+            <p class="text-[11px] text-slate-200">
+              85% del impacto atribuible a Speakers en Verde; 15% restante al respaldo de colegios y familias.
+            </p>
+          </div>
+          <div class="bg-brand-brightLime/10 p-3.5 rounded-2xl border border-brand-brightLime/40">
+            <span class="text-brand-brightLime font-bold block mb-0.5">Factor neto = 0,7650</span>
+            <p class="text-[11px] text-white font-bold">
+              Valor social neto final: <strong>$111.456.931 CLP</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Gobernanza y Métricas Clave para Auditoría (Comité Corfo) -->
+      <div class="bg-[#501D78] border-2 border-white/20 rounded-3xl p-6 sm:p-8 shadow-sticker-green">
+        <span class="text-xs font-black tracking-wider text-brand-yellow uppercase block mb-1">Rigor y verificadores oficiales</span>
+        <h3 class="text-2xl font-black text-white font-display mb-4">Gobernanza y respaldo metodológico</h3>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
+          <div class="bg-[#2D0A4E] p-4 rounded-2xl border border-white/10">
+            <span class="text-[10px] text-slate-300 font-bold uppercase block">Satisfacción global</span>
+            <span class="text-2xl font-black text-brand-brightLime font-display mt-1 block">96,2%</span>
+            <span class="text-[11px] text-slate-200 block mt-0.5">Escala favorable Likert (4 o 5)</span>
+          </div>
+
+          <div class="bg-[#2D0A4E] p-4 rounded-2xl border border-white/10">
+            <span class="text-[10px] text-slate-300 font-bold uppercase block">NPS del programa</span>
+            <span class="text-2xl font-black text-brand-brightLime font-display mt-1 block">+84.62</span>
+            <span class="text-[11px] text-slate-200 block mt-0.5">88,5% promotores • 0% detractores</span>
+          </div>
+
+          <div class="bg-[#2D0A4E] p-4 rounded-2xl border border-white/10">
+            <span class="text-[10px] text-slate-300 font-bold uppercase block">Retención escolar</span>
+            <span class="text-2xl font-black text-brand-yellow font-display mt-1 block">100%</span>
+            <span class="text-[11px] text-slate-200 block mt-0.5">25 de 25 estudiantes culminaron</span>
+          </div>
+
+          <div class="bg-[#2D0A4E] p-4 rounded-2xl border border-white/10">
+            <span class="text-[10px] text-slate-300 font-bold uppercase block">Proyectos validados</span>
+            <span class="text-2xl font-black text-brand-rose font-display mt-1 block">100% (5/5)</span>
+            <span class="text-[11px] text-slate-200 block mt-0.5">Pitch final ante jurado técnico</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
   <footer class="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t-2 border-white/10 text-center reveal section-deferred">
     
     <div class="bg-gradient-to-b from-[#501D78] to-[#2A0845] border-2 border-white/30 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
@@ -1637,6 +2023,135 @@
         }
       });
     }
+
+    // ==========================================
+    // CONTROL DE ACCESO PROTEGIDO - RETORNO SOCIAL
+    // Contraseña: 2016
+    // ==========================================
+    const SROI_PASSWORD = '2016';
+
+    function isSroiUnlocked() {
+      return sessionStorage.getItem('sroi_unlocked') === 'true';
+    }
+
+    function applySroiUI(unlocked) {
+      const lockedCard = document.getElementById('sroi-locked-card');
+      const unlockedContent = document.getElementById('sroi-unlocked-content');
+      const navIcon = document.getElementById('nav-sroi-icon');
+      const navBtn = document.getElementById('nav-sroi-btn');
+
+      if (unlocked) {
+        if (lockedCard) lockedCard.style.display = 'none';
+        if (unlockedContent) unlockedContent.style.display = 'block';
+        if (navIcon) {
+          navIcon.setAttribute('data-lucide', 'unlock');
+          navIcon.classList.remove('text-brand-yellow');
+          navIcon.classList.add('text-brand-brightLime');
+        }
+        if (navBtn) {
+          navBtn.classList.remove('text-brand-yellow', 'border-brand-yellow/30', 'bg-brand-yellow/10');
+          navBtn.classList.add('text-brand-brightLime', 'border-brand-brightLime/30', 'bg-brand-brightLime/10');
+        }
+      } else {
+        if (lockedCard) lockedCard.style.display = 'block';
+        if (unlockedContent) unlockedContent.style.display = 'none';
+        if (navIcon) {
+          navIcon.setAttribute('data-lucide', 'lock');
+          navIcon.classList.remove('text-brand-brightLime');
+          navIcon.classList.add('text-brand-yellow');
+        }
+        if (navBtn) {
+          navBtn.classList.remove('text-brand-brightLime', 'border-brand-brightLime/30', 'bg-brand-brightLime/10');
+          navBtn.classList.add('text-brand-yellow', 'border-brand-yellow/30', 'bg-brand-yellow/10');
+        }
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function handleSroiNavClick(e) {
+      e.preventDefault();
+      if (isSroiUnlocked()) {
+        document.getElementById('retorno-social').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        openSroiModal();
+      }
+    }
+
+    function openSroiModal() {
+      const modal = document.getElementById('sroi-modal');
+      const input = document.getElementById('modal-sroi-pass');
+      const error = document.getElementById('modal-sroi-error');
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        const card = document.getElementById('sroi-modal-card');
+        if (card) card.classList.remove('scale-95');
+      }
+      if (error) error.classList.add('hidden');
+      if (input) {
+        input.value = '';
+        setTimeout(() => input.focus(), 150);
+      }
+    }
+
+    function closeSroiModal() {
+      const modal = document.getElementById('sroi-modal');
+      if (modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100');
+        const card = document.getElementById('sroi-modal-card');
+        if (card) card.classList.add('scale-95');
+      }
+    }
+
+    function verifyModalSroi() {
+      const input = document.getElementById('modal-sroi-pass');
+      const error = document.getElementById('modal-sroi-error');
+      if (input && input.value.trim() === SROI_PASSWORD) {
+        sessionStorage.setItem('sroi_unlocked', 'true');
+        applySroiUI(true);
+        closeSroiModal();
+        setTimeout(() => {
+          document.getElementById('retorno-social').scrollIntoView({ behavior: 'smooth' });
+        }, 200);
+      } else {
+        if (error) error.classList.remove('hidden');
+        if (input) {
+          input.classList.add('border-red-500');
+          setTimeout(() => input.classList.remove('border-red-500'), 1000);
+        }
+      }
+    }
+
+    function verifyPageSroi() {
+      const input = document.getElementById('page-sroi-pass');
+      const error = document.getElementById('page-sroi-error');
+      if (input && input.value.trim() === SROI_PASSWORD) {
+        sessionStorage.setItem('sroi_unlocked', 'true');
+        applySroiUI(true);
+        setTimeout(() => {
+          document.getElementById('retorno-social').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        if (error) error.classList.remove('hidden');
+        if (input) {
+          input.classList.add('border-red-500');
+          setTimeout(() => input.classList.remove('border-red-500'), 1000);
+        }
+      }
+    }
+
+    function lockSroi() {
+      sessionStorage.removeItem('sroi_unlocked');
+      applySroiUI(false);
+      document.getElementById('retorno-social').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Inicializar estado de bloqueo al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      applySroiUI(isSroiUnlocked());
+    });
+
   </script>
 </body>
 </html>
