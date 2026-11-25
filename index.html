@@ -1454,14 +1454,22 @@
             <div class="bg-white/5 p-4 rounded-xl border border-white/10 flex flex-col justify-between space-y-2">
               <div>
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-black text-white font-mono">F_bioclima</span>
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300">Factor Bioclimático</span>
+                  <span class="text-xs font-black text-brand-yellow font-mono">F_bioclima</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-brand-yellow/20 text-brand-yellow">Factor Bioclimático</span>
                 </div>
-                <strong class="text-2xl font-black text-white font-display block mt-1">1.15 ponderador</strong>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <strong class="text-2xl font-black text-white font-display">1.15</strong>
+                  <span class="text-[10px] text-slate-400 font-mono">(Base 1.00 + 15%)</span>
+                </div>
               </div>
               <p class="text-[11px] text-slate-300 leading-relaxed">
-                Ajuste territorial que valoriza el desarrollo de soluciones adaptadas a la escasez hídrica, aridez extrema y radiación solar del desierto.
+                Ajuste territorial por aridez extrema en El Loa, compuesto por 3 componentes técnicos de +5% cada uno:
               </p>
+              <div class="text-[10px] text-slate-300 space-y-1 bg-black/30 p-2 rounded-lg border border-white/5">
+                <div class="flex justify-between items-center"><span>• Estrés hídrico y radiación UV:</span> <strong class="text-brand-brightLime font-mono">+5%</strong></div>
+                <div class="flex justify-between items-center"><span>• Pertinencia adaptación desierto:</span> <strong class="text-brand-brightLime font-mono">+5%</strong></div>
+                <div class="flex justify-between items-center"><span>• Factor zona extrema / logística:</span> <strong class="text-brand-brightLime font-mono">+5%</strong></div>
+              </div>
             </div>
 
             <!-- Card 5: g_Hake -->
