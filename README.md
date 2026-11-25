@@ -91,6 +91,7 @@ dashboard_github/
 ## 📄 Archivos Complementarios del Proyecto
 
 En el directorio del proyecto también se encuentran disponibles:
+- **`Matriz_Asistencia_y_ROIS_Speakers_Calama.xlsx`**: Libro oficial de auditoría de asistencia (37 registros en terreno) y recálculo del indicador ROIS (1.54x real vs 1.78x presupuestado).
 - **`Informe_Ejecutivo_NPS_Speakers_En_Verde_Calama_2026.pdf`**: Informe ejecutivo imprimible en formato A4 listo para presentación ante el comité.
 - **`Speakers_En_Verde_Calama_2026_Evaluacion_NPS.xlsx`**: Libro de cálculo Excel con 4 pestañas formateadas profesionalmente.
 - **`Respuestas_Speakers_En_Verde_Calama_2026.csv`**: Archivo plano para interoperabilidad con R, Python o PowerBI.

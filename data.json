@@ -946,5 +946,89 @@
       "Clasificacion_NPS": "Promotor",
       "Promedio_Dimensiones": 4.416666666666667
     }
-  ]
+  ],
+  "rois_audit": {
+    "project": "Speakers en Verde Calama 2026",
+    "corfo_code": "25VIRTL-307467",
+    "formula": "ROIS = [ ( ID * FP_vuln + IR_efectivo ) * F_bioclima * (1 + g_Hake) + CAE ] / CTI",
+    "budgeted": {
+      "attendance_pct": 90.0,
+      "ID": 22.5,
+      "weighted_impact_core": 43.13,
+      "bioclimatic_adjusted": 49.59,
+      "pedagogical_value_hake": 62.24,
+      "monetized_social_value": 49791094,
+      "total_social_return": 62291094,
+      "CTI": 35000000,
+      "rois": 1.78
+    },
+    "audited": {
+      "attendance_pct": 70.33,
+      "ID": 17.58,
+      "weighted_impact_core": 36.98,
+      "bioclimatic_adjusted": 42.52,
+      "pedagogical_value_hake": 53.37,
+      "monetized_social_value": 41493639,
+      "total_social_return": 53993639,
+      "CTI": 35000000,
+      "rois": 1.54
+    },
+    "attendance_by_school": [
+      {
+        "school": "Liceo Bicentenario Politécnico Cesáreo Aguirre Goyenechea",
+        "students": 5,
+        "teachers": 1,
+        "scheduled": 48,
+        "attended": 41,
+        "attendance_pct": 85.42,
+        "status": "Sobresaliente"
+      },
+      {
+        "school": "Colegio Chuquicamata",
+        "students": 5,
+        "teachers": 1,
+        "scheduled": 48,
+        "attended": 37,
+        "attendance_pct": 77.08,
+        "status": "Alto"
+      },
+      {
+        "school": "Liceo Minero América",
+        "students": 5,
+        "teachers": 1,
+        "scheduled": 48,
+        "attended": 35,
+        "attendance_pct": 72.92,
+        "status": "Favorable"
+      },
+      {
+        "school": "Liceo Francisco de Aguirre (B-8)",
+        "students": 5,
+        "teachers": 1,
+        "scheduled": 42,
+        "attended": 27,
+        "attendance_pct": 64.29,
+        "status": "Aceptable"
+      },
+      {
+        "school": "Colegio Ecológico Montessori",
+        "students": 5,
+        "teachers": 1,
+        "scheduled": 48,
+        "attended": 23,
+        "attendance_pct": 47.92,
+        "status": "Rezago de asistencia"
+      }
+    ],
+    "cohort_totals": {
+      "students": 25,
+      "teachers": 5,
+      "total_participants": 30,
+      "total_scheduled": 234,
+      "total_attended": 163,
+      "global_attendance_pct": 70.33,
+      "perfect_attendance_count": 7,
+      "high_attendance_pct": 72.0
+    }
+  }
 }
